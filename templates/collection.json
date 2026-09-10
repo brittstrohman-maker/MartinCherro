@@ -1,4 +1,4 @@
-{
+﻿{
   "sections": {
     "banner": {
       "type": "main-collection-banner",
@@ -16,14 +16,29 @@
         "color_scheme": "scheme-1",
         "image_ratio": "adapt",
         "image_shape": "default",
-        "show_secondary_image": false,
+        "show_secondary_image": true,
         "show_vendor": false,
-        "show_rating": false,
-        "quick_add": "none",
+        "show_rating": true,
+        "quick_add": "standard",
         "enable_filtering": true,
         "filter_type": "horizontal",
         "enable_sorting": true,
         "columns_mobile": "2",
+        "padding_top": 36,
+        "padding_bottom": 48
+      }
+    },
+    "trust_strip": {
+      "type": "trust-value-strip",
+      "blocks": {
+        "t1": { "type": "value_item", "settings": { "icon": "compass", "title": "Built For The Journey", "subtitle": "Field-tested dog travel essentials" } },
+        "t2": { "type": "value_item", "settings": { "icon": "shield", "title": "Safety Certified", "subtitle": "Vehicle-tested hardware & restraints" } },
+        "t3": { "type": "value_item", "settings": { "icon": "truck", "title": "Free Delivery", "subtitle": "Across Europe on orders over €75" } },
+        "t4": { "type": "value_item", "settings": { "icon": "refresh", "title": "30-Day Trial", "subtitle": "Hassle-free returns on all gear" } }
+      },
+      "block_order": ["t1", "t2", "t3", "t4"],
+      "settings": {
+        "color_scheme": "scheme-1",
         "padding_top": 36,
         "padding_bottom": 36
       }
@@ -31,6 +46,7 @@
   },
   "order": [
     "banner",
-    "product-grid"
+    "product-grid",
+    "trust_strip"
   ]
 }

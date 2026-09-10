@@ -1,23 +1,64 @@
-<style type="text/css">
-  .template-404 .title + * {
-    margin-top: 1rem;
+﻿{%- style -%}
+  .template-404-canitera {
+    padding: 10rem 2rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 60vh;
+    background: radial-gradient(circle at center, rgba(45, 64, 48, 0.05) 0%, rgba(250, 248, 245, 0) 70%);
+  }
+
+  .template-404-canitera__eyebrow {
+    font-size: 1.3rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgb(var(--color-button));
+    margin-bottom: 1.6rem;
+  }
+
+  .template-404-canitera__title {
+    font-size: calc(var(--font-heading-scale) * 3.8rem);
+    line-height: 1.15;
+    color: rgb(var(--color-foreground));
+    margin: 0 0 1.6rem;
+    max-width: 60rem;
   }
 
   @media screen and (min-width: 750px) {
-    .template-404 .title + * {
-      margin-top: 2rem;
+    .template-404-canitera__title {
+      font-size: calc(var(--font-heading-scale) * 4.8rem);
     }
   }
-</style>
 
-<div class="template-404 page-width page-margin center">
-  <p>
-    {{ 'templates.404.subtext' | t }}
-  </p>
-  <h1 class="title">
-    {{ 'templates.404.title' | t }}
-  </h1>
-  <a href="{{ routes.all_products_collection_url }}" class="button">
-    {{ 'general.continue_shopping' | t }}
-  </a>
+  .template-404-canitera__copy {
+    font-size: 1.8rem;
+    line-height: 1.6;
+    color: rgba(var(--color-foreground), 0.75);
+    margin: 0 auto 3.6rem;
+    max-width: 48rem;
+  }
+
+  .template-404-canitera__buttons {
+    display: flex;
+    gap: 1.6rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+{%- endstyle -%}
+
+<div class="template-404-canitera page-width color-scheme-1 gradient">
+  <span class="template-404-canitera__eyebrow">404 &bull; Path Not Found</span>
+  <h1 class="template-404-canitera__title">Looks like you've wandered off the trail.</h1>
+  <p class="template-404-canitera__copy">Let's get you back to the good stuff.</p>
+  <div class="template-404-canitera__buttons">
+    <a href="{{ routes.all_products_collection_url }}" class="button button--primary">
+      Shop Products
+    </a>
+    <a href="{{ routes.root_url }}" class="button button--secondary">
+      Go Home
+    </a>
+  </div>
 </div>

@@ -1,4 +1,4 @@
-{
+﻿{
   "sections": {
     "main": {
       "type": "main-article",
@@ -13,13 +13,13 @@
           "type": "title",
           "settings": {
             "blog_show_date": true,
-            "blog_show_author": false
+            "blog_show_author": true
           }
         },
         "share": {
           "type": "share",
           "settings": {
-            "share_label": "Share"
+            "share_label": "Share Story"
           }
         },
         "content": {
@@ -32,9 +32,39 @@
         "share",
         "content"
       ]
+    },
+    "featured_gear": {
+      "type": "related-products",
+      "settings": {
+        "heading": "Essential Gear For This Journey",
+        "heading_size": "h2",
+        "products_to_show": 4,
+        "columns_desktop": 4,
+        "color_scheme": "scheme-1",
+        "image_ratio": "adapt",
+        "show_secondary_image": true,
+        "show_rating": true,
+        "columns_mobile": "2",
+        "padding_top": 60,
+        "padding_bottom": 48
+      }
+    },
+    "newsletter": {
+      "type": "journal-newsletter",
+      "settings": {
+        "color_scheme": "scheme-1",
+        "eyebrow": "The Canitera Journal",
+        "heading": "More miles. More memories.",
+        "subtext": "<p>Join the Canitera journal for travel inspiration, practical tips and new arrivals.</p>",
+        "button_label": "Join Journal",
+        "padding_top": 48,
+        "padding_bottom": 64
+      }
     }
   },
   "order": [
-    "main"
+    "main",
+    "featured_gear",
+    "newsletter"
   ]
 }

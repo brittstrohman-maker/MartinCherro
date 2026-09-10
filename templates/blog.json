@@ -1,4 +1,4 @@
-{
+﻿{
   "sections": {
     "main": {
       "type": "main-blog",
@@ -8,12 +8,25 @@
         "image_height": "medium",
         "show_date": true,
         "show_author": false,
-        "padding_top": 36,
-        "padding_bottom": 36
+        "padding_top": 48,
+        "padding_bottom": 48
+      }
+    },
+    "newsletter": {
+      "type": "journal-newsletter",
+      "settings": {
+        "color_scheme": "scheme-1",
+        "eyebrow": "Dispatches From The Road",
+        "heading": "Never Miss a Travel Story",
+        "subtext": "<p>Sign up to receive practical dog travel guides, destination field notes, and packing checklists directly in your inbox.</p>",
+        "button_label": "Join Journal",
+        "padding_top": 60,
+        "padding_bottom": 60
       }
     }
   },
   "order": [
-    "main"
+    "main",
+    "newsletter"
   ]
 }
