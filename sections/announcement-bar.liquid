@@ -19,7 +19,11 @@
 {% endif %}
 
 <div
+  id="AnnouncementBar-{{ section.id }}"
   class="utility-bar color-{{ section.settings.color_scheme }} gradient{% if section.settings.show_line_separator and section.blocks.size > 0 %} utility-bar--bottom-border{% elsif section.settings.show_line_separator and section.settings.show_social and social_icons%} utility-bar--bottom-border-social-only{% endif %}{% if section.settings.enable_country_selector or section.settings.enable_language_selector %} header-localization{% endif %}"
+  data-section-id="{{ section.id }}"
+  data-dismissible="{{ section.settings.enable_dismiss }}"
+  data-storage-type="{{ section.settings.dismiss_storage | default: 'session' }}"
 >
   <div class="page-width utility-bar__grid{% if announcement_bar and language_country_selector or section.settings.show_social and social_icons %} utility-bar__grid--3-col{% elsif language_country_selector or section.settings.show_social and social_icons %} utility-bar__grid--2-col{% endif %}">
     {%- if section.settings.show_social and social_icons -%}
@@ -158,9 +162,79 @@
           {%- endform -%}
         </localization-form>
       {%- endif -%}
+
+      {%- if section.settings.enable_dismiss -%}
+        <button
+          type="button"
+          class="announcement-bar__close"
+          aria-label="Dismiss announcement"
+        >
+          <span class="svg-wrapper">
+            {{- 'icon-close.svg' | inline_asset_content -}}
+          </span>
+        </button>
+      {%- endif -%}
     </div>
   </div>
 </div>
+
+{%- if section.settings.enable_dismiss -%}
+  <script>
+    (function () {
+      const sectionId = {{ section.id | json }};
+      const storageKey = 'canitera_announcement_dismissed_' + sectionId;
+      const isDesignMode = Boolean(window.Shopify && window.Shopify.designMode);
+      const storageType = {{ section.settings.dismiss_storage | default: 'session' | json }};
+      const storage = storageType === 'local' ? window.localStorage : window.sessionStorage;
+      const bar = document.getElementById('AnnouncementBar-' + sectionId);
+
+      if (!bar) return;
+
+      // Check stored dismissal immediately
+      if (!isDesignMode && storage) {
+        try {
+          if (storage.getItem(storageKey) === 'true') {
+            bar.style.display = 'none';
+            document.documentElement.style.setProperty('--announcement-bar-height', '0px');
+            return;
+          }
+        } catch (e) {}
+      }
+
+      // Update announcement bar height property
+      const updateHeight = () => {
+        if (bar.offsetHeight > 0) {
+          document.documentElement.style.setProperty('--announcement-bar-height', `${bar.offsetHeight}px`);
+        }
+      };
+      updateHeight();
+      window.addEventListener('resize', updateHeight);
+
+      // Bind close button event
+      const closeBtn = bar.querySelector('.announcement-bar__close');
+      if (closeBtn) {
+        closeBtn.addEventListener('click', function (e) {
+          e.preventDefault();
+          bar.style.transition = 'opacity 0.25s ease, max-height 0.25s ease';
+          bar.style.opacity = '0';
+          bar.style.maxHeight = '0px';
+          bar.style.overflow = 'hidden';
+
+          setTimeout(function () {
+            bar.style.display = 'none';
+            document.documentElement.style.setProperty('--announcement-bar-height', '0px');
+          }, 250);
+
+          if (!isDesignMode && storage) {
+            try {
+              storage.setItem(storageKey, 'true');
+            } catch (err) {}
+          }
+        });
+      }
+    })();
+  </script>
+{%- endif -%}
 
 {% schema %}
 {
@@ -171,6 +245,29 @@
     "groups": ["header"]
   },
   "settings": [
+    {
+      "type": "checkbox",
+      "id": "enable_dismiss",
+      "label": "Enable dismiss button",
+      "default": true,
+      "info": "Allows visitors to dismiss the announcement banner for their session or device."
+    },
+    {
+      "type": "select",
+      "id": "dismiss_storage",
+      "label": "Dismiss persistence",
+      "options": [
+        {
+          "value": "session",
+          "label": "Session only (sessionStorage)"
+        },
+        {
+          "value": "local",
+          "label": "Persistent across visits (localStorage)"
+        }
+      ],
+      "default": "session"
+    },
     {
       "type": "checkbox",
       "id": "auto_rotate",
@@ -205,7 +302,7 @@
     },
     {
       "type": "paragraph",
-         "content": "t:sections.announcement-bar.settings.paragraph.content"
+      "content": "t:sections.announcement-bar.settings.paragraph.content"
     },             
     {
       "type": "checkbox",
@@ -237,7 +334,7 @@
         {
           "type": "text",
           "id": "text",
-          "default": "t:sections.announcement-bar.blocks.announcement.settings.text.default",
+          "default": "Adventure starts here — free shipping on orders over €75",
           "label": "t:sections.announcement-bar.blocks.announcement.settings.text.label"
         },
         {
@@ -253,7 +350,10 @@
       "name": "t:sections.announcement-bar.presets.name",
       "blocks": [
         {
-          "type": "announcement"
+          "type": "announcement",
+          "settings": {
+            "text": "Adventure starts here — free shipping on orders over €75"
+          }
         }
       ]
     }

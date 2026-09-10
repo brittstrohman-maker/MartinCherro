@@ -8,6 +8,7 @@
         "color_scheme": "scheme-1",
         "show_line_separator": true,
         "show_social": false,
+        "enable_dismiss": true,
         "auto_rotate": false,
         "change_slides_speed": 5,
         "enable_country_selector": false,
@@ -17,7 +18,7 @@
         "announcement-bar-0": {
           "type": "announcement",
           "settings": {
-            "text": "Welcome to our store",
+            "text": "Adventure starts here — free shipping on orders over €75",
             "text_alignment": "center",
             "color_scheme": "scheme-1",
             "link": ""

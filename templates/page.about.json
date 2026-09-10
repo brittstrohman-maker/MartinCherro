@@ -1,0 +1,117 @@
+﻿{
+  "sections": {
+    "hero": {
+      "type": "hero-cover",
+      "settings": {
+        "badge": "Our Story",
+        "heading": "Every journey is better together.",
+        "subtext": "<p>Canitera was created from a simple idea: dogs shouldn't be left behind when adventure begins.</p>",
+        "primary_button_label": "Shop Canitera",
+        "primary_button_link": "shopify://collections/all",
+        "secondary_button_label": "Travel Hub",
+        "secondary_button_link": "shopify://pages/travel",
+        "show_scroll_indicator": false,
+        "desktop_height": "70vh",
+        "color_scheme": "scheme-3"
+      }
+    },
+    "story": {
+      "type": "brand-story-split",
+      "settings": {
+        "color_scheme": "scheme-1",
+        "layout": "image_first",
+        "badge": "Our Why",
+        "heading": "Because the best memories are shared.",
+        "text": "<p>Canitera was born out of frustration with flimsy travel crates, neon accessories, and car gear that felt like an afterthought. We design durable, quiet, and beautiful travel essentials so you and your dog can explore further with total confidence.</p>",
+        "button_label": "Explore Travel Gear",
+        "button_link": "shopify://collections/all",
+        "padding_top": 64,
+        "padding_bottom": 64
+      }
+    },
+    "philosophy": {
+      "type": "why-canitera",
+      "blocks": {
+        "p_1": {
+          "type": "pillar",
+          "settings": {
+            "icon": "heart",
+            "title": "Comfort",
+            "text": "We design around the way dogs actually travel, sleep, and rest on long journeys."
+          }
+        },
+        "p_2": {
+          "type": "pillar",
+          "settings": {
+            "icon": "zap",
+            "title": "Simplicity",
+            "text": "Travel should feel effortless. Packable shapes, easy clean-up, and zero hassle."
+          }
+        },
+        "p_3": {
+          "type": "pillar",
+          "settings": {
+            "icon": "shield",
+            "title": "Adventure",
+            "text": "Built tough for mountain cabins, coastal breezes, and spontaneous detours."
+          }
+        }
+      },
+      "block_order": [
+        "p_1",
+        "p_2",
+        "p_3"
+      ],
+      "settings": {
+        "color_scheme": "scheme-1",
+        "eyebrow": "The Canitera Philosophy",
+        "title": "Three Guiding Principles",
+        "subtitle": "Everything we create solves a real travel problem.",
+        "padding_top": 64,
+        "padding_bottom": 64
+      }
+    },
+    "community": {
+      "type": "community-ugc",
+      "blocks": {
+        "u1": { "type": "photo", "settings": { "caption": "@canitera • Alpine Passes" } },
+        "u2": { "type": "photo", "settings": { "caption": "@canitera • Coastal Drives" } },
+        "u3": { "type": "photo", "settings": { "caption": "@canitera • Forest Cabins" } },
+        "u4": { "type": "photo", "settings": { "caption": "@canitera • Wild Camping" } }
+      },
+      "block_order": [
+        "u1",
+        "u2",
+        "u3",
+        "u4"
+      ],
+      "settings": {
+        "color_scheme": "scheme-1",
+        "tagline": "The Canitera Pack",
+        "heading": "Where Will You Go Next?",
+        "subtitle": "Join thousands of dogs exploring Europe and beyond.",
+        "padding_top": 64,
+        "padding_bottom": 64
+      }
+    },
+    "final_cta": {
+      "type": "final-cta-banner",
+      "settings": {
+        "color_scheme": "scheme-3",
+        "overlay_opacity": 50,
+        "heading": "Ready for the next adventure?",
+        "subtext": "<p>Discover the essentials crafted for your dog's journey.</p>",
+        "button_label": "Shop Canitera",
+        "button_link": "shopify://collections/all",
+        "banner_height": "50vh"
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "story",
+    "philosophy",
+    "community",
+    "final_cta"
+  ]
+}

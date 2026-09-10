@@ -1,0 +1,82 @@
+﻿{
+  "sections": {
+    "faq": {
+      "type": "faq-accordion",
+      "blocks": {
+        "q1": {
+          "type": "question",
+          "settings": {
+            "category": "Travel Safety",
+            "question": "Are your products crash-tested and certified for car travel?",
+            "answer": "<p>Yes. All Canitera travel restraints and safety seatbelts are crafted with high-tensile nylon webbing, heavy-duty alloy hardware, and tested to withstand high-impact forces. We advise securing harnesses directly into ISOFIX or factory seatbelt receptacles.</p>"
+          }
+        },
+        "q2": {
+          "type": "question",
+          "settings": {
+            "category": "Shipping & Delivery",
+            "question": "How long does delivery take across Europe?",
+            "answer": "<p>Orders are dispatched within 24 hours from our European warehouse. Standard shipping takes 2–4 business days. Free shipping is automatically applied at checkout on all orders over €75.</p>"
+          }
+        },
+        "q3": {
+          "type": "question",
+          "settings": {
+            "category": "Products & Fitment",
+            "question": "Will your seat covers and beds fit my vehicle model?",
+            "answer": "<p>Our seat liners and all-terrain beds feature universal sizing with adjustable headrest anchors, side-flaps, and tuck-in seat anchors designed to fit SUVs, estates, hatchbacks, and saloons perfectly.</p>"
+          }
+        },
+        "q4": {
+          "type": "question",
+          "settings": {
+            "category": "Care & Washing",
+            "question": "How do I clean mud and sand from Canitera gear?",
+            "answer": "<p>All fabric covers unzip and are 100% machine-washable at 30°C. For daily maintenance on road trips, simple shaking and wiping down with a damp cloth is all that's required.</p>"
+          }
+        },
+        "q5": {
+          "type": "question",
+          "settings": {
+            "category": "Returns & Trial",
+            "question": "What is the 30-day adventure trial?",
+            "answer": "<p>We want you to test Canitera gear on real journeys. If it doesn't make travelling with your companion simpler and more comfortable, you can return it within 30 days for a full refund.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "q1",
+        "q2",
+        "q3",
+        "q4",
+        "q5"
+      ],
+      "settings": {
+        "color_scheme": "scheme-1",
+        "eyebrow": "Frequently Asked Questions",
+        "heading": "Answers For The Road",
+        "subtitle": "Everything you need to know about Canitera gear, fitment, and care.",
+        "padding_top": 64,
+        "padding_bottom": 48
+      }
+    },
+    "support_cta": {
+      "type": "brand-story-split",
+      "settings": {
+        "color_scheme": "scheme-1",
+        "layout": "image_second",
+        "badge": "Need Personal Guidance?",
+        "heading": "We'd love to hear from you.",
+        "text": "<p>Questions about dog sizing, vehicle fitment, or your upcoming road trip? Our team is on hand to help ensure your companion travels in complete comfort.</p>",
+        "button_label": "Get in Touch",
+        "button_link": "shopify://pages/contact",
+        "padding_top": 48,
+        "padding_bottom": 64
+      }
+    }
+  },
+  "order": [
+    "faq",
+    "support_cta"
+  ]
+}

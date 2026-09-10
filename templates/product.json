@@ -1,4 +1,4 @@
-{
+﻿{
   "sections": {
     "main": {
       "type": "main-product",
@@ -6,7 +6,7 @@
         "vendor": {
           "type": "text",
           "settings": {
-            "text": "{{ product.vendor }}",
+            "text": "CANITERA TRAVEL GEAR",
             "text_style": "uppercase"
           }
         },
@@ -30,16 +30,40 @@
           "type": "buy_buttons",
           "settings": {
             "show_dynamic_checkout": true,
-            "show_gift_card_recipient": true
+            "show_gift_card_recipient": false
           }
         },
         "description": {
           "type": "description"
         },
+        "collapsible_details": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Materials & Dimensions",
+            "icon": "leather",
+            "content": "<p>Constructed with abrasion-resistant 900D ballistic nylon, waterproof TPU inner liner, and heavy-duty zinc alloy hardware. Wipe-clean and machine-washable at 30°C.</p>"
+          }
+        },
+        "collapsible_shipping": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Shipping & 30-Day Trial",
+            "icon": "truck",
+            "content": "<p>Free delivery across Europe on orders over €75. Dispatched within 24 hours. Includes our 30-day adventure trial with hassle-free returns.</p>"
+          }
+        },
+        "collapsible_care": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Care & Maintenance",
+            "icon": "washing",
+            "content": "<p>Machine wash cold on delicate cycle. Air dry flat. Do not bleach or iron. Hose down outer fabric for quick post-trail mud removal.</p>"
+          }
+        },
         "share": {
           "type": "share",
           "settings": {
-            "share_label": "Share"
+            "share_label": "Share Gear"
           }
         }
       },
@@ -51,6 +75,9 @@
         "quantity_selector",
         "buy_buttons",
         "description",
+        "collapsible_details",
+        "collapsible_shipping",
+        "collapsible_care",
         "share"
       ],
       "settings": {
@@ -65,39 +92,98 @@
         "mobile_thumbnails": "hide",
         "hide_variants": true,
         "enable_video_looping": false,
-        "padding_top": 36,
-        "padding_bottom": 12
+        "padding_top": 40,
+        "padding_bottom": 40
       }
     },
-    "disclosures": {
-      "type": "disclosures",
+    "benefits": {
+      "type": "why-canitera",
+      "blocks": {
+        "b1": {
+          "type": "pillar",
+          "settings": {
+            "icon": "shield",
+            "title": "Ready for the Road",
+            "text": "Tested for vibration resistance, sudden stops, and rugged transit conditions."
+          }
+        },
+        "b2": {
+          "type": "pillar",
+          "settings": {
+            "icon": "sparkles",
+            "title": "Easy to Clean",
+            "text": "Mud, water, and sand repel effortlessly off treated technical weaves."
+          }
+        },
+        "b3": {
+          "type": "pillar",
+          "settings": {
+            "icon": "heart",
+            "title": "Calm & Comfort",
+            "text": "Orthopaedic core pressure-relief reduces canine anxiety on long journeys."
+          }
+        },
+        "b4": {
+          "type": "pillar",
+          "settings": {
+            "icon": "zap",
+            "title": "Packable Design",
+            "text": "Rolls down tight with integrated straps to maximize boot space."
+          }
+        }
+      },
+      "block_order": [
+        "b1",
+        "b2",
+        "b3",
+        "b4"
+      ],
       "settings": {
-        "padding_top": 36,
-        "padding_bottom": 0
+        "color_scheme": "scheme-1",
+        "eyebrow": "Engineered Performance",
+        "title": "Built for Every Journey",
+        "subtitle": "Purpose-designed details that solve real travel challenges.",
+        "padding_top": 60,
+        "padding_bottom": 60
       }
     },
-    "related-products": {
+    "product_story": {
+      "type": "brand-story-split",
+      "settings": {
+        "color_scheme": "scheme-1",
+        "layout": "image_first",
+        "badge": "Design Notes",
+        "heading": "Designed for life on the move.",
+        "text": "<p>Every seam and fastener is tested in real travel conditions — from coastal spray to gravel tracks. We eliminate unnecessary bulk, leaving only refined, durable essentials that blend into modern vehicle interiors.</p>",
+        "button_label": "Discover Our Philosophy",
+        "button_link": "shopify://pages/about",
+        "padding_top": 60,
+        "padding_bottom": 60
+      }
+    },
+    "related_products": {
       "type": "related-products",
       "settings": {
-        "heading": "You may also like",
+        "heading": "Complete the Journey",
         "heading_size": "h2",
         "products_to_show": 4,
         "columns_desktop": 4,
         "color_scheme": "scheme-1",
-        "image_ratio": "square",
+        "image_ratio": "adapt",
         "image_shape": "default",
         "show_secondary_image": true,
         "show_vendor": false,
-        "show_rating": false,
+        "show_rating": true,
         "columns_mobile": "2",
-        "padding_top": 36,
-        "padding_bottom": 28
+        "padding_top": 60,
+        "padding_bottom": 60
       }
     }
   },
   "order": [
     "main",
-    "disclosures",
-    "related-products"
+    "benefits",
+    "product_story",
+    "related_products"
   ]
 }

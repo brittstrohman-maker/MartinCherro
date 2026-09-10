@@ -1,0 +1,239 @@
+{% comment %}
+  Renders floating sticky Add-to-Cart bar for product templates.
+  Features thumbnail, title, price, variant picker, and instant Ajax Cart Drawer trigger.
+
+  Accepts:
+  - product: {Object} Product object (required).
+  - class: {String} Additional CSS classes (optional).
+
+  Usage:
+  {% render 'sticky-atc', product: product %}
+{% endcomment %}
+
+{%- if product != blank and product.available -%}
+  {%- liquid
+    assign current_variant = product.selected_or_first_available_variant
+    assign featured_media = current_variant.featured_media | default: product.featured_media
+    assign sticky_form_id = 'sticky-atc-form-' | append: product.id
+  -%}
+
+  <sticky-atc
+    class="sticky-atc color-scheme-1{% if class != blank %} {{ class }}{% endif %}"
+    data-section-id="{{ section.id | default: 'main' }}"
+    data-product-id="{{ product.id }}"
+    role="region"
+    aria-label="{{ 'products.product.sticky_atc_label' | t | default: 'Sticky purchase bar' }}"
+  >
+    <div class="sticky-atc__container page-width">
+      <!-- Product Info (Thumbnail + Title + Variant) -->
+      <div class="sticky-atc__product">
+        {%- if featured_media != blank -%}
+          <div class="sticky-atc__media">
+            <img
+              src="{{ featured_media | image_url: width: 120 }}"
+              alt="{{ featured_media.alt | default: product.title | escape }}"
+              width="56"
+              height="56"
+              loading="lazy"
+              class="sticky-atc__image"
+            >
+          </div>
+        {%- endif -%}
+        <div class="sticky-atc__details">
+          <div class="sticky-atc__title h4">{{ product.title }}</div>
+          <div class="sticky-atc__price" id="StickyPrice-{{ product.id }}">
+            {% render 'price', product: product, use_variant: true %}
+          </div>
+        </div>
+      </div>
+
+      <!-- Controls (Variant selector + CTA) -->
+      <div class="sticky-atc__actions">
+        {%- if product.variants.size > 1 -%}
+          <div class="sticky-atc__select-wrapper select">
+            <select
+              id="StickySelect-{{ product.id }}"
+              class="sticky-atc__select select__select"
+              aria-label="{{ 'products.product.selector_label' | t | default: 'Select variant' }}"
+            >
+              {%- for variant in product.variants -%}
+                <option
+                  value="{{ variant.id }}"
+                  {% if variant.id == current_variant.id %}selected="selected"{% endif %}
+                  {% unless variant.available %}disabled="disabled"{% endunless %}
+                  data-price="{{ variant.price | money }}"
+                  data-available="{{ variant.available }}"
+                  data-image="{{ variant.featured_media | default: product.featured_media | image_url: width: 120 }}"
+                >
+                  {{ variant.title }} &ndash; {{ variant.price | money }}
+                  {% unless variant.available %} ({{ 'products.product.sold_out' | t | default: 'Sold out' }}){% endunless %}
+                </option>
+              {%- endfor -%}
+            </select>
+            <span class="svg-wrapper">
+              <svg class="icon icon-caret" viewBox="0 0 10 6" width="10" height="6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="1 1 5 5 9 1"/>
+              </svg>
+            </span>
+          </div>
+        {%- endif -%}
+
+        <product-form class="sticky-atc__form">
+          <div class="product-form__error-message-wrapper" role="alert" hidden>
+            <span class="product-form__error-message"></span>
+          </div>
+
+          {%- form 'product',
+            product,
+            id: sticky_form_id,
+            class: 'form',
+            novalidate: 'novalidate',
+            data-type: 'add-to-cart-form'
+          -%}
+            <input
+              type="hidden"
+              name="id"
+              value="{{ current_variant.id }}"
+              class="sticky-atc__variant-id"
+              {% unless current_variant.available %}disabled{% endunless %}
+            >
+            <button
+              type="submit"
+              name="add"
+              class="sticky-atc__submit button button--primary"
+              {% unless current_variant.available %}disabled{% endunless %}
+            >
+              <span class="sticky-atc__submit-text">
+                {%- if current_variant.available -%}
+                  {{ 'products.product.add_to_cart' | t | default: 'Add to cart' }}
+                {%- else -%}
+                  {{ 'products.product.sold_out' | t | default: 'Sold out' }}
+                {%- endif -%}
+              </span>
+              <div class="loading__spinner hidden">
+                <svg aria-hidden="true" focusable="false" class="spinner" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+                  <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
+                </svg>
+              </div>
+            </button>
+          {%- endform -%}
+        </product-form>
+      </div>
+    </div>
+
+    <!-- Web Component Lifecycle & PubSub Event Hookup -->
+    <script>
+      if (!customElements.get('sticky-atc')) {
+        customElements.define('sticky-atc', class StickyATC extends HTMLElement {
+          constructor() {
+            super();
+            this.productForm = this.querySelector('.sticky-atc__form product-form');
+            this.select = this.querySelector('.sticky-atc__select');
+            this.hiddenIdInput = this.querySelector('.sticky-atc__variant-id');
+            this.submitBtn = this.querySelector('.sticky-atc__submit');
+            this.submitText = this.querySelector('.sticky-atc__submit-text');
+            this.thumbnail = this.querySelector('.sticky-atc__image');
+            this.sectionId = this.dataset.sectionId;
+          }
+
+          connectedCallback() {
+            this.initIntersectionObserver();
+            this.initPubSub();
+            if (this.select) {
+              this.select.addEventListener('change', this.onSelectChange.bind(this));
+            }
+          }
+
+          disconnectedCallback() {
+            if (this.observer) this.observer.disconnect();
+            if (this.variantChangeUnsub) this.variantChangeUnsub();
+          }
+
+          initIntersectionObserver() {
+            const target = document.querySelector(`#ProductSubmitButton-${this.sectionId}`) ||
+                           document.querySelector('.product__info-container .product-form') ||
+                           document.querySelector('.product-form');
+            if (!target) return;
+
+            this.observer = new IntersectionObserver((entries) => {
+              entries.forEach((entry) => {
+                if (!entry.isIntersecting && entry.boundingClientRect.top < 0) {
+                  this.classList.add('is-visible');
+                } else {
+                  this.classList.remove('is-visible');
+                }
+              });
+            }, { threshold: 0.1 });
+
+            this.observer.observe(target);
+          }
+
+          initPubSub() {
+            if (typeof subscribe === 'function' && typeof PUB_SUB_EVENTS !== 'undefined') {
+              this.variantChangeUnsub = subscribe(PUB_SUB_EVENTS.variantChange, (event) => {
+                if (!event.data || !event.data.variant) return;
+                const variant = event.data.variant;
+                this.syncVariant(variant);
+              });
+            }
+          }
+
+          syncVariant(variant) {
+            if (this.select && variant.id) {
+              this.select.value = variant.id;
+            }
+            if (this.hiddenIdInput) {
+              this.hiddenIdInput.value = variant.id;
+            }
+            if (this.submitBtn && this.submitText) {
+              if (variant.available) {
+                this.submitBtn.removeAttribute('disabled');
+                this.submitText.textContent = window.variantStrings?.addToCart || 'Add to cart';
+              } else {
+                this.submitBtn.setAttribute('disabled', 'disabled');
+                this.submitText.textContent = window.variantStrings?.soldOut || 'Sold out';
+              }
+            }
+            if (variant.featured_image && this.thumbnail) {
+              this.thumbnail.src = variant.featured_image.src;
+            }
+          }
+
+          onSelectChange() {
+            const selectedOpt = this.select.options[this.select.selectedIndex];
+            const variantId = selectedOpt.value;
+            const available = selectedOpt.dataset.available === 'true';
+            const imageUrl = selectedOpt.dataset.image;
+
+            if (this.hiddenIdInput) this.hiddenIdInput.value = variantId;
+            if (imageUrl && this.thumbnail) this.thumbnail.src = imageUrl;
+
+            if (this.submitBtn && this.submitText) {
+              if (available) {
+                this.submitBtn.removeAttribute('disabled');
+                this.submitText.textContent = window.variantStrings?.addToCart || 'Add to cart';
+              } else {
+                this.submitBtn.setAttribute('disabled', 'disabled');
+                this.submitText.textContent = window.variantStrings?.soldOut || 'Sold out';
+              }
+            }
+
+            const mainPicker = document.querySelector(`variant-selects[data-section="${this.sectionId}"]`) ||
+                               document.querySelector('variant-selects');
+            if (mainPicker) {
+              const input = mainPicker.querySelector(`input[value="${variantId}"], option[value="${variantId}"]`);
+              if (input) {
+                if (input.tagName === 'OPTION') {
+                  input.parentElement.value = variantId;
+                  input.parentElement.dispatchEvent(new Event('change', { bubbles: true }));
+                } else {
+                  input.click();
+                }
+              }
+            }
+          }
+        });
+      }
+    </script>
+  </sticky-atc>
+{%- endif -%}

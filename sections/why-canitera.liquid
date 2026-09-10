@@ -1,0 +1,274 @@
+﻿{%- style -%}
+  .why-canitera--{{ section.id }} {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+
+  .why-canitera__header {
+    text-align: center;
+    max-width: 65rem;
+    margin: 0 auto 5rem;
+  }
+
+  .why-canitera__eyebrow {
+    font-size: 1.2rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgb(var(--color-button));
+    margin-bottom: 1rem;
+    display: block;
+  }
+
+  .why-canitera__title {
+    font-size: calc(var(--font-heading-scale) * 3.2rem);
+    color: rgb(var(--color-foreground));
+    margin: 0 0 1.2rem;
+    line-height: 1.15;
+  }
+
+  .why-canitera__subtitle {
+    font-size: 1.6rem;
+    color: rgba(var(--color-foreground), 0.75);
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  .why-canitera__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+
+  @media screen and (min-width: 600px) {
+    .why-canitera__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media screen and (min-width: 990px) {
+    .why-canitera__grid {
+      grid-template-columns: repeat({{ section.blocks.size | at_least: 2 | at_most: 4 }}, 1fr);
+      gap: 3.6rem;
+    }
+  }
+
+  .why-canitera__item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 3.2rem 2.4rem;
+    border-radius: var(--media-radius, 8px);
+    background-color: rgba(var(--color-foreground), 0.02);
+    border: 1px solid rgba(var(--color-foreground), 0.06);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .why-canitera__item:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px -10px rgba(0, 0, 0, 0.08);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .why-canitera__item:hover {
+      transform: none;
+    }
+  }
+
+  .why-canitera__icon-wrap {
+    width: 5.2rem;
+    height: 5.2rem;
+    border-radius: 12px;
+    background-color: rgba(var(--color-button), 0.08);
+    color: rgb(var(--color-button));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 2rem;
+  }
+
+  .why-canitera__icon-wrap svg {
+    width: 2.6rem;
+    height: 2.6rem;
+  }
+
+  .why-canitera__item-title {
+    font-size: 1.8rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: rgb(var(--color-foreground));
+    margin: 0 0 1rem;
+  }
+
+  .why-canitera__item-text {
+    font-size: 1.5rem;
+    line-height: 1.6;
+    color: rgba(var(--color-foreground), 0.75);
+    margin: 0;
+  }
+{%- endstyle -%}
+
+<div class="why-canitera why-canitera--{{ section.id }} color-{{ section.settings.color_scheme }} gradient">
+  <div class="page-width">
+    {%- if section.settings.title != blank -%}
+      <div class="why-canitera__header">
+        {%- if section.settings.eyebrow != blank -%}
+          <span class="why-canitera__eyebrow">{{ section.settings.eyebrow | escape }}</span>
+        {%- endif -%}
+        <h2 class="why-canitera__title">{{ section.settings.title | escape }}</h2>
+        {%- if section.settings.subtitle != blank -%}
+          <p class="why-canitera__subtitle">{{ section.settings.subtitle | escape }}</p>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <div class="why-canitera__grid" role="list">
+      {%- for block in section.blocks -%}
+        <div class="why-canitera__item" role="listitem" {{ block.shopify_attributes }}>
+          <div class="why-canitera__icon-wrap" aria-hidden="true">
+            {%- case block.settings.icon -%}
+              {%- when 'heart' -%}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+              {%- when 'shield' -%}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              {%- when 'zap' -%}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+              {%- when 'sparkles' -%}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
+              {%- else -%}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+            {%- endcase -%}
+          </div>
+          <h3 class="why-canitera__item-title">{{ block.settings.title | escape }}</h3>
+          <p class="why-canitera__item-text">{{ block.settings.text | escape }}</p>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Why Canitera",
+  "tag": "section",
+  "class": "section-why-canitera",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "The Canitera Standard"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Why Canitera"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Engineered around the reality of travelling with dogs."
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 24,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 24,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 64
+    }
+  ],
+  "blocks": [
+    {
+      "type": "pillar",
+      "name": "Pillar",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "heart", "label": "Heart / Comfort" },
+            { "value": "shield", "label": "Shield / Safety" },
+            { "value": "zap", "label": "Lightning / Simplicity" },
+            { "value": "sparkles", "label": "Sparkles / Design" }
+          ],
+          "default": "heart"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Comfort"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Description",
+          "default": "Made for dogs who go everywhere with you. Ergonomic pressure relief for calm, restful journeys."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Why Canitera",
+      "blocks": [
+        {
+          "type": "pillar",
+          "settings": {
+            "icon": "heart",
+            "title": "Comfort",
+            "text": "Made for dogs who go everywhere with you. Ergonomic support and temperature-regulating materials."
+          }
+        },
+        {
+          "type": "pillar",
+          "settings": {
+            "icon": "shield",
+            "title": "Safety",
+            "text": "Thoughtful essentials for journeys big and small. Restraints and harnesses tested for security."
+          }
+        },
+        {
+          "type": "pillar",
+          "settings": {
+            "icon": "zap",
+            "title": "Simplicity",
+            "text": "Less fuss, more adventure. Quick-release buckles, machine-washable fabrics, and packable shapes."
+          }
+        },
+        {
+          "type": "pillar",
+          "settings": {
+            "icon": "sparkles",
+            "title": "Design",
+            "text": "Practical products that belong in your lifestyle. Subtle colors, premium tactile finishes, zero clutter."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

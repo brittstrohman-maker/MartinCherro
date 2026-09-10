@@ -1,0 +1,277 @@
+{{ 'section-image-banner.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .hero-cover--{{ section.id }} {
+    position: relative;
+    min-height: {{ section.settings.desktop_height | default: '85vh' }};
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background-color: var(--color-background);
+  }
+
+  .hero-cover__media {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+  }
+
+  .hero-cover__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .hero-cover__media-placeholder {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #1C1D1D 0%, #2D4030 50%, #1E2B20 100%);
+  }
+
+  .hero-cover__overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(28, 29, 29, 0.45) 0%, rgba(28, 29, 29, 0.2) 50%, rgba(28, 29, 29, 0.65) 100%);
+    z-index: 1;
+  }
+
+  .hero-cover__content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    color: #FFFFFF;
+    max-width: 80rem;
+    padding: 8rem 2rem;
+  }
+
+  .hero-cover__badge {
+    display: inline-block;
+    padding: 0.6rem 1.6rem;
+    margin-bottom: 2rem;
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 10rem;
+    font-size: 1.3rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #FAF8F5;
+  }
+
+  .hero-cover__heading {
+    font-size: calc(var(--font-heading-scale) * 4rem);
+    color: #FFFFFF;
+    margin: 0 0 1.6rem;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+  }
+
+  @media screen and (min-width: 750px) {
+    .hero-cover__heading {
+      font-size: calc(var(--font-heading-scale) * 6rem);
+    }
+  }
+
+  .hero-cover__subtext {
+    font-size: 1.8rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.9);
+    margin: 0 auto 3.6rem;
+    max-width: 60rem;
+  }
+
+  .hero-cover__buttons {
+    display: inline-flex;
+    gap: 1.6rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .hero-cover__scroll-indicator {
+    position: absolute;
+    bottom: 2.4rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.6rem;
+    color: rgba(255, 255, 255, 0.75);
+    text-decoration: none;
+    font-size: 1.1rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    transition: color 0.2s ease;
+  }
+
+  .hero-cover__scroll-indicator:hover {
+    color: #FFFFFF;
+  }
+
+  .hero-cover__scroll-indicator svg {
+    animation: bounce 2s infinite;
+  }
+
+  @keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+      transform: translateY(0);
+    }
+    40% {
+      transform: translateY(6px);
+    }
+    60% {
+      transform: translateY(3px);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-cover__scroll-indicator svg {
+      animation: none;
+    }
+  }
+{%- endstyle -%}
+
+<div class="hero-cover hero-cover--{{ section.id }} color-{{ section.settings.color_scheme }} gradient">
+  <div class="hero-cover__media">
+    {%- if section.settings.image != blank -%}
+      {%- assign image_alt = section.settings.image.alt | default: section.settings.heading | escape -%}
+      {% render 'responsive-image',
+        image: section.settings.image,
+        sizes: '100vw',
+        priority: true,
+        alt: image_alt
+      %}
+    {%- else -%}
+      <div class="hero-cover__media-placeholder"></div>
+    {%- endif -%}
+  </div>
+
+  <div class="hero-cover__overlay"></div>
+
+  <div class="hero-cover__content page-width">
+    {%- if section.settings.badge != blank -%}
+      <span class="hero-cover__badge">{{ section.settings.badge | escape }}</span>
+    {%- endif -%}
+
+    {%- if section.settings.heading != blank -%}
+      <h1 class="hero-cover__heading">{{ section.settings.heading | escape }}</h1>
+    {%- endif -%}
+
+    {%- if section.settings.subtext != blank -%}
+      <div class="hero-cover__subtext rte">{{ section.settings.subtext }}</div>
+    {%- endif -%}
+
+    <div class="hero-cover__buttons">
+      {%- if section.settings.primary_button_label != blank -%}
+        <a href="{{ section.settings.primary_button_link | default: '/collections/all' }}" class="button button--primary">
+          {{ section.settings.primary_button_label | escape }}
+        </a>
+      {%- endif -%}
+      {%- if section.settings.secondary_button_label != blank -%}
+        <a href="{{ section.settings.secondary_button_link | default: '/pages/travel' }}" class="button button--secondary">
+          {{ section.settings.secondary_button_label | escape }}
+        </a>
+      {%- endif -%}
+    </div>
+  </div>
+
+  {%- if section.settings.show_scroll_indicator -%}
+    <a href="#MainContent" class="hero-cover__scroll-indicator" aria-label="Scroll down to content">
+      <span>Scroll</span>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="6 9 12 15 18 9"></polyline>
+      </svg>
+    </a>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Hero / Cover",
+  "tag": "section",
+  "class": "section-hero-cover",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Cover lifestyle image"
+    },
+    {
+      "type": "text",
+      "id": "badge",
+      "default": "Built For The Journey",
+      "label": "Eyebrow badge"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "default": "Go Further. Together.",
+      "label": "Heading"
+    },
+    {
+      "type": "richtext",
+      "id": "subtext",
+      "default": "<p>Thoughtfully engineered dog travel gear built for life on the road with your companion.</p>",
+      "label": "Subtext"
+    },
+    {
+      "type": "text",
+      "id": "primary_button_label",
+      "default": "Shop Travel Gear",
+      "label": "Primary button label"
+    },
+    {
+      "type": "url",
+      "id": "primary_button_link",
+      "label": "Primary button link"
+    },
+    {
+      "type": "text",
+      "id": "secondary_button_label",
+      "default": "Explore Travel Hub",
+      "label": "Secondary button label"
+    },
+    {
+      "type": "url",
+      "id": "secondary_button_link",
+      "label": "Secondary button link"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_scroll_indicator",
+      "default": true,
+      "label": "Show scroll indicator"
+    },
+    {
+      "type": "select",
+      "id": "desktop_height",
+      "label": "Desktop height",
+      "options": [
+        { "value": "70vh", "label": "Medium" },
+        { "value": "85vh", "label": "Large" },
+        { "value": "100vh", "label": "Full screen" }
+      ],
+      "default": "85vh"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-3"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero / Cover"
+    }
+  ]
+}
+{% endschema %}

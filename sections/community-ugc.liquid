@@ -1,0 +1,224 @@
+﻿{%- style -%}
+  .community-ugc--{{ section.id }} {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+
+  .community-ugc__header {
+    text-align: center;
+    max-width: 60rem;
+    margin: 0 auto 4rem;
+  }
+
+  .community-ugc__tag {
+    font-size: 1.2rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgb(var(--color-button));
+    margin-bottom: 0.8rem;
+    display: block;
+  }
+
+  .community-ugc__title {
+    font-size: calc(var(--font-heading-scale) * 3.2rem);
+    color: rgb(var(--color-foreground));
+    margin: 0 0 1rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .community-ugc__subtitle {
+    font-size: 1.5rem;
+    color: rgba(var(--color-foreground), 0.75);
+    margin: 0;
+  }
+
+  .community-ugc__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.2rem;
+  }
+
+  @media screen and (min-width: 750px) {
+    .community-ugc__grid {
+      grid-template-columns: repeat({{ section.blocks.size | at_least: 3 | at_most: 6 }}, 1fr);
+      gap: 1.6rem;
+    }
+  }
+
+  .community-ugc__item {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    border-radius: var(--media-radius, 6px);
+    overflow: hidden;
+    background-color: rgba(var(--color-foreground), 0.04);
+    display: block;
+    text-decoration: none;
+  }
+
+  .community-ugc__media {
+    width: 100%;
+    height: 100%;
+    transition: transform 0.4s ease;
+  }
+
+  .community-ugc__item:hover .community-ugc__media {
+    transform: scale(1.06);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .community-ugc__item:hover .community-ugc__media {
+      transform: none;
+    }
+  }
+
+  .community-ugc__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .community-ugc__overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(28, 29, 29, 0.4);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #FFFFFF;
+    font-size: 1.2rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    padding: 1rem;
+    text-align: center;
+  }
+
+  .community-ugc__item:hover .community-ugc__overlay {
+    opacity: 1;
+  }
+{%- endstyle -%}
+
+<div class="community-ugc community-ugc--{{ section.id }} color-{{ section.settings.color_scheme }} gradient">
+  <div class="page-width">
+    <div class="community-ugc__header">
+      {%- if section.settings.tagline != blank -%}
+        <span class="community-ugc__tag">{{ section.settings.tagline | escape }}</span>
+      {%- endif -%}
+      <h2 class="community-ugc__title">{{ section.settings.heading | escape }}</h2>
+      {%- if section.settings.subtitle != blank -%}
+        <p class="community-ugc__subtitle">{{ section.settings.subtitle | escape }}</p>
+      {%- endif -%}
+    </div>
+
+    <div class="community-ugc__grid">
+      {%- for block in section.blocks -%}
+        <a href="{{ block.settings.link | default: '#' }}" class="community-ugc__item" {{ block.shopify_attributes }}>
+          <div class="community-ugc__media">
+            {%- if block.settings.image != blank -%}
+              {%- assign ugc_alt = block.settings.image.alt | default: 'Canitera community adventure' | escape -%}
+              {% render 'responsive-image', image: block.settings.image, sizes: '(min-width: 750px) 20vw, 50vw', alt: ugc_alt %}
+            {%- else -%}
+              <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #2D4030 0%, #1C1D1D 100%);"></div>
+            {%- endif -%}
+          </div>
+          <div class="community-ugc__overlay">
+            <span>{{ block.settings.caption | default: '@canitera' | escape }}</span>
+          </div>
+        </a>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Community UGC Grid",
+  "tag": "section",
+  "class": "section-community-ugc",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "text",
+      "id": "tagline",
+      "label": "Tagline",
+      "default": "#CANITERATRAVELS"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Take Canitera With You"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtext",
+      "default": "Tag @canitera to be featured in our dispatches from the road."
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 24,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 24,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 64
+    }
+  ],
+  "blocks": [
+    {
+      "type": "photo",
+      "name": "Community Photo",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Photo"
+        },
+        {
+          "type": "text",
+          "id": "caption",
+          "label": "Handle / Location",
+          "default": "@canitera"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Optional link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Community UGC Grid",
+      "blocks": [
+        { "type": "photo", "settings": { "caption": "@alps.hound • Dolomites" } },
+        { "type": "photo", "settings": { "caption": "@norway_roamer • Lofoten" } },
+        { "type": "photo", "settings": { "caption": "@vanlife.canine • Portugal" } },
+        { "type": "photo", "settings": { "caption": "@highland_pup • Scotland" } },
+        { "type": "photo", "settings": { "caption": "@coastaldogs • Cornwall" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

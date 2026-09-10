@@ -1,0 +1,223 @@
+﻿{%- style -%}
+  .trust-strip--{{ section.id }} {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+    background-color: var(--color-background);
+    border-bottom: 1px solid rgba(var(--color-foreground), 0.08);
+  }
+
+  .trust-strip__grid {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 2rem;
+    padding: 1rem 0;
+    scrollbar-width: thin;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  @media screen and (min-width: 750px) {
+    .trust-strip__grid {
+      display: grid;
+      grid-template-columns: repeat({{ section.blocks.size | at_least: 2 | at_most: 4 }}, 1fr);
+      overflow-x: visible;
+      gap: 3rem;
+      padding: 0;
+    }
+  }
+
+  .trust-strip__item {
+    display: flex;
+    align-items: center;
+    gap: 1.4rem;
+    min-width: 240px;
+    flex-shrink: 0;
+  }
+
+  @media screen and (min-width: 750px) {
+    .trust-strip__item {
+      min-width: 0;
+      flex-shrink: 1;
+    }
+  }
+
+  .trust-strip__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 4.4rem;
+    height: 4.4rem;
+    border-radius: 50%;
+    background-color: rgba(var(--color-button), 0.08);
+    color: rgb(var(--color-button));
+    flex-shrink: 0;
+  }
+
+  .trust-strip__icon svg {
+    width: 2.2rem;
+    height: 2.2rem;
+  }
+
+  .trust-strip__text {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .trust-strip__title {
+    font-size: 1.4rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: rgb(var(--color-foreground));
+    margin: 0 0 0.3rem;
+    line-height: 1.2;
+  }
+
+  .trust-strip__subtitle {
+    font-size: 1.3rem;
+    color: rgba(var(--color-foreground), 0.7);
+    margin: 0;
+    line-height: 1.4;
+  }
+{%- endstyle -%}
+
+<div class="trust-strip trust-strip--{{ section.id }} color-{{ section.settings.color_scheme }} gradient">
+  <div class="page-width">
+    <div class="trust-strip__grid" role="list">
+      {%- for block in section.blocks -%}
+        <div class="trust-strip__item" role="listitem" {{ block.shopify_attributes }}>
+          <div class="trust-strip__icon" aria-hidden="true">
+            {%- case block.settings.icon -%}
+              {%- when 'shield' -%}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              {%- when 'compass' -%}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+              {%- when 'truck' -%}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+              {%- when 'refresh' -%}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+              {%- when 'feather' -%}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"/><line x1="16" y1="8" x2="2" y2="22"/><line x1="17.5" y1="15" x2="9" y2="15"/></svg>
+              {%- else -%}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>
+            {%- endcase -%}
+          </div>
+          <div class="trust-strip__text">
+            <h3 class="trust-strip__title">{{ block.settings.title | escape }}</h3>
+            {%- if block.settings.subtitle != blank -%}
+              <p class="trust-strip__subtitle">{{ block.settings.subtitle | escape }}</p>
+            {%- endif -%}
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Trust / Value Strip",
+  "tag": "section",
+  "class": "section-trust-strip",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 12,
+      "max": 60,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 12,
+      "max": 60,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 24
+    }
+  ],
+  "blocks": [
+    {
+      "type": "value_item",
+      "name": "Value Proposition",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "compass", "label": "Compass / Journey" },
+            { "value": "shield", "label": "Shield / Safety" },
+            { "value": "feather", "label": "Feather / Comfort" },
+            { "value": "truck", "label": "Truck / Fast Delivery" },
+            { "value": "refresh", "label": "Refresh / Easy Returns" }
+          ],
+          "default": "compass"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Built For The Journey"
+        },
+        {
+          "type": "text",
+          "id": "subtitle",
+          "label": "Subtext",
+          "default": "Engineered for road trips & outdoor life"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Trust / Value Strip",
+      "blocks": [
+        {
+          "type": "value_item",
+          "settings": {
+            "icon": "compass",
+            "title": "Built For The Journey",
+            "subtitle": "Engineered for road trips & outdoor life"
+          }
+        },
+        {
+          "type": "value_item",
+          "settings": {
+            "icon": "shield",
+            "title": "Safety & Comfort First",
+            "subtitle": "Crash-tested & ergonomic materials"
+          }
+        },
+        {
+          "type": "value_item",
+          "settings": {
+            "icon": "feather",
+            "title": "Thoughtful Design",
+            "subtitle": "Easy to pack, clean, and store"
+          }
+        },
+        {
+          "type": "value_item",
+          "settings": {
+            "icon": "truck",
+            "title": "Fast Worldwide Delivery",
+            "subtitle": "Free shipping over €75"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

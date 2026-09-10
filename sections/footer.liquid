@@ -87,8 +87,8 @@
                       {{ block.settings.subtext }}
                     </div>
                   {%- when 'link_list' -%}
-                    {%- if block.settings.menu != blank -%}
-                      <ul class="footer-block__details-content list-unstyled">
+                    <ul class="footer-block__details-content list-unstyled">
+                      {%- if block.settings.menu != blank and block.settings.menu.links.size > 0 -%}
                         {%- for link in block.settings.menu.links -%}
                           <li>
                             <a
@@ -99,8 +99,92 @@
                             </a>
                           </li>
                         {%- endfor -%}
-                      </ul>
-                    {%- endif -%}
+                      {%- else -%}
+                        {%- assign h_lower = block.settings.heading | downcase -%}
+                        {%- if h_lower contains 'shop' -%}
+                          <li><a href="/collections/all" class="link link--text list-menu__item list-menu__item--link">Travel Gear</a></li>
+                          <li><a href="/collections/all" class="link link--text list-menu__item list-menu__item--link">Travel Beds & Mats</a></li>
+                          <li><a href="/collections/all" class="link link--text list-menu__item list-menu__item--link">Safety Harnesses</a></li>
+                          <li><a href="/collections/all" class="link link--text list-menu__item list-menu__item--link">Bowls & Hydration</a></li>
+                        {%- elsif h_lower contains 'about' -%}
+                          <li><a href="/pages/about" class="link link--text list-menu__item list-menu__item--link">Our Story</a></li>
+                          <li><a href="/pages/about" class="link link--text list-menu__item list-menu__item--link">Design Philosophy</a></li>
+                          <li><a href="/pages/travel" class="link link--text list-menu__item list-menu__item--link">Travel Hub</a></li>
+                          <li><a href="/blogs/journal" class="link link--text list-menu__item list-menu__item--link">The Journal</a></li>
+                        {%- elsif h_lower contains 'help' -%}
+                          <li><a href="/pages/faq" class="link link--text list-menu__item list-menu__item--link">Shipping & Returns</a></li>
+                          <li><a href="/pages/faq" class="link link--text list-menu__item list-menu__item--link">Size Guide</a></li>
+                          <li><a href="/pages/faq" class="link link--text list-menu__item list-menu__item--link">FAQ</a></li>
+                          <li><a href="/pages/contact" class="link link--text list-menu__item list-menu__item--link">Contact Support</a></li>
+                        {%- elsif h_lower contains 'legal' -%}
+                          <li><a href="/policies/privacy-policy" class="link link--text list-menu__item list-menu__item--link">Privacy Policy</a></li>
+                          <li><a href="/policies/terms-of-service" class="link link--text list-menu__item list-menu__item--link">Terms of Service</a></li>
+                          <li><a href="/policies/refund-policy" class="link link--text list-menu__item list-menu__item--link">Refund Policy</a></li>
+                          <li><a href="/policies/shipping-policy" class="link link--text list-menu__item list-menu__item--link">Shipping Policy</a></li>
+                        {%- endif -%}
+                      {%- endif -%}
+                    </ul>
+                  {%- when 'newsletter' -%}
+                    <div class="footer-block__details-content footer-block--newsletter-block">
+                      {%- if block.settings.subtext != blank -%}
+                        <div class="footer-block__subtext rte">{{ block.settings.subtext }}</div>
+                      {%- endif -%}
+                      {%- form 'customer', id: 'ContactFooterBlock', class: 'footer__newsletter newsletter-form' -%}
+                        <input type="hidden" name="contact[tags]" value="newsletter">
+                        <div class="newsletter-form__field-wrapper">
+                          <div class="field">
+                            <input
+                              id="NewsletterForm--{{ block.id }}"
+                              type="email"
+                              name="contact[email]"
+                              class="field__input"
+                              value="{{ form.email }}"
+                              aria-required="true"
+                              autocorrect="off"
+                              autocapitalize="off"
+                              autocomplete="email"
+                              placeholder="{{ 'newsletter.label' | t }}"
+                              required
+                            >
+                            <label class="field__label" for="NewsletterForm--{{ block.id }}">
+                              {{ 'newsletter.label' | t }}
+                            </label>
+                            <button
+                              type="submit"
+                              class="newsletter-form__button field__button"
+                              name="commit"
+                              id="Subscribe-{{ block.id }}"
+                              aria-label="{{ 'newsletter.button_label' | t }}"
+                            >
+                              <span class="svg-wrapper">
+                                {{- 'icon-arrow.svg' | inline_asset_content -}}
+                              </span>
+                            </button>
+                          </div>
+                          {%- if form.errors -%}
+                            <small class="newsletter-form__message form__message" id="ContactFooterBlock-error">
+                              <span class="svg-wrapper">{{- 'icon-error.svg' | inline_asset_content -}}</span>
+                              {{ form.errors.translated_fields.email | capitalize }}
+                              {{ form.errors.messages.email }}
+                            </small>
+                          {%- endif -%}
+                        </div>
+                        {%- if form.posted_successfully? -%}
+                          <h3
+                            class="newsletter-form__message newsletter-form__message--success form__message"
+                            id="ContactFooterBlock-success"
+                            tabindex="-1"
+                            autofocus
+                          >
+                            <span class="svg-wrapper">{{- 'icon-success.svg' | inline_asset_content -}}</span>
+                            {{- 'newsletter.success' | t }}
+                          </h3>
+                        {%- endif -%}
+                      {%- endform -%}
+                      {%- if block.settings.show_social and has_social_icons -%}
+                        {%- render 'social-icons', class: 'footer__list-social' -%}
+                      {%- endif -%}
+                    </div>
                   {%- when 'brand_information' -%}
                     <div class="footer-block__brand-info">
                       {%- if settings.brand_image != blank -%}
@@ -287,11 +371,21 @@
           <div class="footer__payment">
             <span class="visually-hidden">{{ 'sections.footer.payment' | t }}</span>
             <ul class="list list-payment" role="list">
-              {%- for type in shop.enabled_payment_types -%}
-                <li class="list-payment__item">
-                  {{ type | payment_type_svg_tag: class: 'icon icon--full-color' }}
-                </li>
-              {%- endfor -%}
+              {%- assign payment_types = shop.enabled_payment_types -%}
+              {%- if payment_types == empty -%}
+                {%- assign default_payments = 'visa,master,american_express,apple_pay,google_pay,paypal' | split: ',' -%}
+                {%- for type in default_payments -%}
+                  <li class="list-payment__item">
+                    {{ type | payment_type_svg_tag: class: 'icon icon--full-color' }}
+                  </li>
+                {%- endfor -%}
+              {%- else -%}
+                {%- for type in shop.enabled_payment_types -%}
+                  <li class="list-payment__item">
+                    {{ type | payment_type_svg_tag: class: 'icon icon--full-color' }}
+                  </li>
+                {%- endfor -%}
+              {%- endif -%}
             </ul>
           </div>
         {%- endif -%}
@@ -300,9 +394,8 @@
     <div class="footer__content-bottom-wrapper page-width{% if section.settings.enable_country_selector == false and section.settings.enable_language_selector == false %} footer__content-bottom-wrapper--center{% endif %}">
       <div class="footer__copyright caption">
         <small class="copyright__content"
-          >&copy; {{ 'now' | date: '%Y' }}, {{ shop.name | link_to: routes.root_url -}}
+          >&copy; {{ 'now' | date: '%Y' }}, Canitera. Built for the journey.
         </small>
-        <small class="copyright__content">{{ powered_by_link }}</small>
         {%- if section.settings.show_policy -%}
           <ul class="policies list-unstyled">
             {%- for policy in shop.policies -%}
@@ -343,6 +436,31 @@
           "id": "menu",
           "default": "footer",
           "label": "t:sections.footer.blocks.link_list.settings.menu.label"
+        }
+      ]
+    },
+    {
+      "type": "newsletter",
+      "name": "Newsletter",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "inline_richtext",
+          "id": "heading",
+          "default": "More miles. More memories.",
+          "label": "Heading"
+        },
+        {
+          "type": "richtext",
+          "id": "subtext",
+          "default": "<p>Subscribe for road-trip guides, canine travel tips, and early access to new gear.</p>",
+          "label": "Subtext"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_social",
+          "default": true,
+          "label": "Show social media icons"
         }
       ]
     },

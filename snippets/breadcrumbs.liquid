@@ -1,0 +1,199 @@
+{% comment %}
+  Renders semantic breadcrumb navigation with schema.org BreadcrumbList JSON-LD.
+  Automatically detects template hierarchy: Product, Collection, Article, Blog, Page, Search.
+
+  Accepts:
+  - class: {String} Additional CSS classes (optional).
+
+  Usage:
+  {% render 'breadcrumbs' %}
+  {% render 'breadcrumbs', class: 'page-width' %}
+{% endcomment %}
+
+{%- unless template.name == 'index' or template.name == 'cart' -%}
+  {%- liquid
+    assign home_title = 'general.breadcrumbs.home' | t | default: 'Home'
+    assign shop_title = 'general.breadcrumbs.shop' | t | default: 'Shop'
+    assign separator_svg = '<svg class="breadcrumbs__separator-icon" viewBox="0 0 10 10" width="8" height="8" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="3 1 7 5 3 9"/></svg>'
+    
+    # Track JSON-LD items
+    assign ld_level_2_name = ''
+    assign ld_level_2_url = ''
+    assign ld_level_3_name = ''
+    assign ld_level_3_url = ''
+    assign ld_level_4_name = ''
+    assign ld_level_4_url = ''
+  -%}
+
+  <nav class="breadcrumbs{% if class != blank %} {{ class }}{% endif %}" aria-label="{{ 'general.breadcrumbs.name' | t | default: 'Breadcrumbs' }}" role="navigation">
+    <ol class="breadcrumbs__list">
+      <!-- Item 1: Home -->
+      <li class="breadcrumbs__item">
+        <a class="breadcrumbs__link" href="{{ routes.root_url }}">{{ home_title }}</a>
+      </li>
+
+      {%- case template.name -%}
+        {%- when 'product' -%}
+          <li class="breadcrumbs__separator" aria-hidden="true">{{ separator_svg }}</li>
+          {%- if collection and collection.url != blank -%}
+            {%- assign ld_level_2_name = collection.title -%}
+            {%- assign ld_level_2_url = shop.url | append: collection.url -%}
+            <li class="breadcrumbs__item">
+              <a class="breadcrumbs__link" href="{{ collection.url }}">{{ collection.title }}</a>
+            </li>
+          {%- elsif product.collections.size > 0 -%}
+            {%- assign ld_level_2_name = product.collections.first.title -%}
+            {%- assign ld_level_2_url = shop.url | append: product.collections.first.url -%}
+            <li class="breadcrumbs__item">
+              <a class="breadcrumbs__link" href="{{ product.collections.first.url }}">{{ product.collections.first.title }}</a>
+            </li>
+          {%- else -%}
+            {%- assign ld_level_2_name = shop_title -%}
+            {%- assign ld_level_2_url = shop.url | append: routes.all_products_collection_url -%}
+            <li class="breadcrumbs__item">
+              <a class="breadcrumbs__link" href="{{ routes.all_products_collection_url }}">{{ shop_title }}</a>
+            </li>
+          {%- endif -%}
+
+          <li class="breadcrumbs__separator" aria-hidden="true">{{ separator_svg }}</li>
+          {%- assign ld_level_3_name = product.title -%}
+          {%- assign ld_level_3_url = canonical_url -%}
+          <li class="breadcrumbs__item breadcrumbs__item--current" aria-current="page">
+            <span class="breadcrumbs__current">{{ product.title }}</span>
+          </li>
+
+        {%- when 'collection' -%}
+          <li class="breadcrumbs__separator" aria-hidden="true">{{ separator_svg }}</li>
+          {%- assign ld_level_2_name = shop_title -%}
+          {%- assign ld_level_2_url = shop.url | append: routes.all_products_collection_url -%}
+          <li class="breadcrumbs__item">
+            <a class="breadcrumbs__link" href="{{ routes.all_products_collection_url }}">{{ shop_title }}</a>
+          </li>
+
+          <li class="breadcrumbs__separator" aria-hidden="true">{{ separator_svg }}</li>
+          {%- if current_tags -%}
+            {%- assign ld_level_3_name = collection.title -%}
+            {%- assign ld_level_3_url = shop.url | append: collection.url -%}
+            <li class="breadcrumbs__item">
+              <a class="breadcrumbs__link" href="{{ collection.url }}">{{ collection.title }}</a>
+            </li>
+            <li class="breadcrumbs__separator" aria-hidden="true">{{ separator_svg }}</li>
+            {%- assign tags_title = current_tags | join: ' + ' -%}
+            {%- assign ld_level_4_name = tags_title -%}
+            {%- assign ld_level_4_url = canonical_url -%}
+            <li class="breadcrumbs__item breadcrumbs__item--current" aria-current="page">
+              <span class="breadcrumbs__current">{{ tags_title }}</span>
+            </li>
+          {%- else -%}
+            {%- assign ld_level_3_name = collection.title -%}
+            {%- assign ld_level_3_url = canonical_url -%}
+            <li class="breadcrumbs__item breadcrumbs__item--current" aria-current="page">
+              <span class="breadcrumbs__current">{{ collection.title }}</span>
+            </li>
+          {%- endif -%}
+
+        {%- when 'blog' -%}
+          <li class="breadcrumbs__separator" aria-hidden="true">{{ separator_svg }}</li>
+          {%- if current_tags -%}
+            {%- assign ld_level_2_name = blog.title -%}
+            {%- assign ld_level_2_url = shop.url | append: blog.url -%}
+            <li class="breadcrumbs__item">
+              <a class="breadcrumbs__link" href="{{ blog.url }}">{{ blog.title }}</a>
+            </li>
+            <li class="breadcrumbs__separator" aria-hidden="true">{{ separator_svg }}</li>
+            {%- assign tags_title = current_tags | join: ' + ' -%}
+            {%- assign ld_level_3_name = tags_title -%}
+            {%- assign ld_level_3_url = canonical_url -%}
+            <li class="breadcrumbs__item breadcrumbs__item--current" aria-current="page">
+              <span class="breadcrumbs__current">{{ tags_title }}</span>
+            </li>
+          {%- else -%}
+            {%- assign ld_level_2_name = blog.title -%}
+            {%- assign ld_level_2_url = canonical_url -%}
+            <li class="breadcrumbs__item breadcrumbs__item--current" aria-current="page">
+              <span class="breadcrumbs__current">{{ blog.title }}</span>
+            </li>
+          {%- endif -%}
+
+        {%- when 'article' -%}
+          <li class="breadcrumbs__separator" aria-hidden="true">{{ separator_svg }}</li>
+          {%- assign ld_level_2_name = blog.title -%}
+          {%- assign ld_level_2_url = shop.url | append: blog.url -%}
+          <li class="breadcrumbs__item">
+            <a class="breadcrumbs__link" href="{{ blog.url }}">{{ blog.title }}</a>
+          </li>
+          <li class="breadcrumbs__separator" aria-hidden="true">{{ separator_svg }}</li>
+          {%- assign ld_level_3_name = article.title -%}
+          {%- assign ld_level_3_url = canonical_url -%}
+          <li class="breadcrumbs__item breadcrumbs__item--current" aria-current="page">
+            <span class="breadcrumbs__current">{{ article.title }}</span>
+          </li>
+
+        {%- when 'page' -%}
+          <li class="breadcrumbs__separator" aria-hidden="true">{{ separator_svg }}</li>
+          {%- assign ld_level_2_name = page.title -%}
+          {%- assign ld_level_2_url = canonical_url -%}
+          <li class="breadcrumbs__item breadcrumbs__item--current" aria-current="page">
+            <span class="breadcrumbs__current">{{ page.title }}</span>
+          </li>
+
+        {%- when 'search' -%}
+          <li class="breadcrumbs__separator" aria-hidden="true">{{ separator_svg }}</li>
+          {%- assign search_title = 'general.search.search' | t | default: 'Search' -%}
+          {%- assign ld_level_2_name = search_title -%}
+          {%- assign ld_level_2_url = canonical_url -%}
+          <li class="breadcrumbs__item breadcrumbs__item--current" aria-current="page">
+            <span class="breadcrumbs__current">{{ search_title }}</span>
+          </li>
+
+        {%- else -%}
+          <li class="breadcrumbs__separator" aria-hidden="true">{{ separator_svg }}</li>
+          {%- assign ld_level_2_name = page_title -%}
+          {%- assign ld_level_2_url = canonical_url -%}
+          <li class="breadcrumbs__item breadcrumbs__item--current" aria-current="page">
+            <span class="breadcrumbs__current">{{ page_title }}</span>
+          </li>
+      {%- endcase -%}
+    </ol>
+  </nav>
+
+  <!-- Schema.org JSON-LD BreadcrumbList -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": {{ home_title | json }},
+        "item": {{ shop.url | append: routes.root_url | json }}
+      }
+      {%- if ld_level_2_name != blank -%}
+      ,{
+        "@type": "ListItem",
+        "position": 2,
+        "name": {{ ld_level_2_name | json }},
+        "item": {{ ld_level_2_url | json }}
+      }
+      {%- endif -%}
+      {%- if ld_level_3_name != blank -%}
+      ,{
+        "@type": "ListItem",
+        "position": 3,
+        "name": {{ ld_level_3_name | json }},
+        "item": {{ ld_level_3_url | json }}
+      }
+      {%- endif -%}
+      {%- if ld_level_4_name != blank -%}
+      ,{
+        "@type": "ListItem",
+        "position": 4,
+        "name": {{ ld_level_4_name | json }},
+        "item": {{ ld_level_4_url | json }}
+      }
+      {%- endif -%}
+    ]
+  }
+  </script>
+{%- endunless -%}

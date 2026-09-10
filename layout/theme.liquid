@@ -115,6 +115,8 @@
         --color-badge-background: {{ scheme.settings.background.red }},{{ scheme.settings.background.green }},{{ scheme.settings.background.blue }};
         --color-badge-border: {{ scheme.settings.text.red }},{{ scheme.settings.text.green }},{{ scheme.settings.text.blue }};
         --payment-terms-background-color: rgb({{ scheme.settings.background.rgb }});
+        --color-accent-1: 45,64,48;
+        --color-accent-2: 217,203,184;
       }
       {% endfor %}
 
@@ -217,6 +219,12 @@
         --text-boxes-shadow-blur-radius: {{ settings.text_boxes_shadow_blur }}px;
 
         --buttons-radius: {{ settings.buttons_radius }}px;
+        --button-radius: {{ settings.buttons_radius }}px;
+        --color-canitera-ivory: #FAF8F5;
+        --color-canitera-charcoal: #1C1D1D;
+        --color-canitera-forest: #2D4030;
+        --color-canitera-sand: #D9CBB8;
+        --color-canitera-dark-green: #1E2B20;
         --buttons-radius-outset: {% if settings.buttons_radius > 0 %}{{ settings.buttons_radius | plus: settings.buttons_border_thickness }}{% else %}0{% endif %}px;
         --buttons-border-width: {% if settings.buttons_border_opacity > 0 %}{{ settings.buttons_border_thickness }}{% else %}0{% endif %}px;
         --buttons-border-opacity: {{ settings.buttons_border_opacity | divided_by: 100.0 }};

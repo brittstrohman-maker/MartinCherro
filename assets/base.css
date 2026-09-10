@@ -3635,3 +3635,747 @@ details-disclosure > details {
     transform: translateX(100%) scaleX(0);
   }
 }
+
+/* ==========================================================================
+   Canitera Brand Identity Design Tokens & Utilities
+   ========================================================================== */
+:root {
+  --color-canitera-ivory: #FAF8F5;
+  --color-canitera-charcoal: #1C1D1D;
+  --color-canitera-forest: #2D4030;
+  --color-canitera-sand: #D9CBB8;
+  --color-canitera-dark-green: #1E2B20;
+
+  --color-accent-1: 45, 64, 48;       /* #2D4030 */
+  --color-accent-2: 217, 203, 184;    /* #D9CBB8 */
+  --button-radius: var(--buttons-radius, 4px);
+  --font-letter-spacing-eyebrow: 0.12rem;
+  --font-letter-spacing-heading: -0.01em;
+}
+
+/* Editorial Typography Polish */
+.editorial-eyebrow,
+.caption-with-letter-spacing {
+  font-size: 1.2rem;
+  letter-spacing: var(--font-letter-spacing-eyebrow);
+  text-transform: uppercase;
+  font-weight: 600;
+  color: rgba(var(--color-foreground), 0.7);
+}
+
+h1, .h1,
+h2, .h2,
+h3, .h3,
+h4, .h4 {
+  letter-spacing: var(--font-letter-spacing-heading);
+  line-height: 1.2;
+}
+
+.rte p,
+.product__description {
+  line-height: 1.65;
+  letter-spacing: 0.02rem;
+}
+
+/* Subtle 4px Corner Radii & Premium Elevation */
+.button,
+.shopify-challenge__button,
+.customer button,
+button.shopify-payment-button__button--unbranded {
+  border-radius: var(--buttons-radius, 4px);
+  font-weight: 500;
+  letter-spacing: 0.08rem;
+  transition: background-color var(--duration-short) ease, transform var(--duration-short) ease, box-shadow var(--duration-short) ease;
+}
+
+.button:not([disabled]):hover,
+.shopify-challenge__button:not([disabled]):hover {
+  transform: translateY(-1px);
+}
+
+.button--secondary {
+  border: 1px solid rgb(var(--color-button));
+  background-color: transparent;
+  color: rgb(var(--color-button));
+}
+
+.button--secondary:hover {
+  background-color: rgba(var(--color-button), 0.06);
+}
+
+/* 4-6px Subtle Radii for Cards, Fields, Badges & Media */
+.card,
+.card__inner,
+.card__media,
+.article-card__image-wrapper,
+.collection-card__image-wrapper {
+  border-radius: var(--media-radius, 6px);
+  overflow: hidden;
+}
+
+.field__input,
+.select__select {
+  border-radius: var(--inputs-radius, 4px);
+}
+
+.badge {
+  border-radius: 4px;
+  padding: 0.35rem 0.8rem;
+  font-size: 1.15rem;
+  font-weight: 600;
+  letter-spacing: 0.08rem;
+  text-transform: uppercase;
+}
+
+/* ==========================================================================
+   Core Snippets Component Styles (Rating Stars, Breadcrumbs, Responsive Image, Sticky ATC, Shipping Progress)
+   ========================================================================== */
+
+/* 1. Rating Stars */
+.rating-stars {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  line-height: 1;
+  color: var(--color-rating-star, #C5A880);
+}
+
+.rating-stars__icons {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.rating-star-icon {
+  width: 1.6rem;
+  height: 1.6rem;
+  flex-shrink: 0;
+  vertical-align: middle;
+}
+
+.rating-star-icon--full {
+  fill: currentColor;
+}
+
+.rating-star-icon--half {
+  fill: none;
+}
+
+.rating-star-icon--empty {
+  fill: rgba(var(--color-foreground), 0.18);
+}
+
+.rating-stars__count {
+  font-size: 1.2rem;
+  color: rgba(var(--color-foreground), 0.75);
+  font-weight: 400;
+  line-height: 1;
+}
+
+.rating-stars--small .rating-star-icon {
+  width: 1.3rem;
+  height: 1.3rem;
+}
+
+.rating-stars--large .rating-star-icon {
+  width: 2.0rem;
+  height: 2.0rem;
+}
+
+/* 2. Breadcrumbs */
+.breadcrumbs {
+  padding: 1.2rem 0;
+  margin-bottom: 1.6rem;
+  font-size: 1.3rem;
+  color: rgba(var(--color-foreground), 0.7);
+}
+
+.breadcrumbs__list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: 0.8rem;
+}
+
+.breadcrumbs__item {
+  display: inline-flex;
+  align-items: center;
+}
+
+.breadcrumbs__link {
+  color: inherit;
+  text-decoration: none;
+  transition: color var(--duration-default) ease;
+}
+
+.breadcrumbs__link:hover {
+  color: rgb(var(--color-foreground));
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.breadcrumbs__separator {
+  display: inline-flex;
+  align-items: center;
+  color: rgba(var(--color-foreground), 0.4);
+}
+
+.breadcrumbs__separator-icon {
+  width: 0.8rem;
+  height: 0.8rem;
+}
+
+.breadcrumbs__item--current {
+  color: rgb(var(--color-foreground));
+  font-weight: 500;
+}
+
+/* 3. Responsive Image */
+.responsive-image-wrapper {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  aspect-ratio: var(--aspect-ratio, auto);
+  border-radius: var(--media-radius, 6px);
+}
+
+.responsive-image-wrapper img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* 4. Sticky ATC Bar */
+.sticky-atc {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 40;
+  background-color: rgb(var(--color-background));
+  border-top: 1px solid rgba(var(--color-foreground), 0.1);
+  box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.08);
+  transform: translateY(100%);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+}
+
+.sticky-atc.is-visible {
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.sticky-atc__container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.2rem 1.5rem;
+  gap: 1.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.sticky-atc__product {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  min-width: 0;
+}
+
+.sticky-atc__media {
+  flex-shrink: 0;
+  width: 4.8rem;
+  height: 4.8rem;
+  border-radius: var(--media-radius, 4px);
+  overflow: hidden;
+  background-color: rgba(var(--color-foreground), 0.04);
+}
+
+.sticky-atc__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.sticky-atc__details {
+  min-width: 0;
+}
+
+.sticky-atc__title {
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: rgb(var(--color-foreground));
+}
+
+.sticky-atc__price {
+  font-size: 1.3rem;
+  color: rgba(var(--color-foreground), 0.75);
+}
+
+.sticky-atc__actions {
+  display: flex;
+  align-items: center;
+  gap: 1.0rem;
+  flex-shrink: 0;
+}
+
+.sticky-atc__select-wrapper {
+  position: relative;
+  min-width: 15rem;
+}
+
+.sticky-atc__select {
+  padding: 0.8rem 3.2rem 0.8rem 1.2rem;
+  font-size: 1.3rem;
+  border-radius: var(--inputs-radius, 4px);
+  border: 1px solid rgba(var(--color-foreground), 0.2);
+  background-color: transparent;
+  color: rgb(var(--color-foreground));
+  cursor: pointer;
+}
+
+.sticky-atc__select-wrapper .svg-wrapper {
+  position: absolute;
+  right: 1.0rem;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.sticky-atc__submit {
+  min-width: 14rem;
+  padding: 1.0rem 2.0rem;
+  font-size: 1.4rem;
+  border-radius: var(--buttons-radius, 4px);
+}
+
+@media screen and (max-width: 749px) {
+  .sticky-atc__container {
+    padding: 1.0rem;
+    gap: 1.0rem;
+  }
+  .sticky-atc__title {
+    max-width: 140px;
+  }
+  .sticky-atc__select-wrapper {
+    display: none;
+  }
+  .sticky-atc__submit {
+    min-width: 12rem;
+    padding: 0.8rem 1.4rem;
+  }
+}
+
+/* 5. Free Shipping Progress Meter Component */
+.shipping-progress,
+.free-shipping-bar {
+  width: 100%;
+  padding: 1.2rem 1.6rem;
+  background-color: rgba(var(--color-accent-2), 0.15);
+  border-radius: var(--media-radius, 6px);
+  margin-bottom: 1.6rem;
+}
+
+.shipping-progress__message,
+.free-shipping-bar__message {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  font-size: 1.35rem;
+  font-weight: 500;
+  color: rgb(var(--color-foreground));
+  margin-bottom: 0.8rem;
+}
+
+.shipping-progress__icon {
+  display: inline-flex;
+  align-items: center;
+  color: rgb(var(--color-button));
+  flex-shrink: 0;
+}
+
+.shipping-progress.is-unlocked .shipping-progress__icon {
+  color: #2D4030;
+}
+
+.shipping-progress__text {
+  line-height: 1.3;
+}
+
+.shipping-progress__track,
+.free-shipping-bar__track {
+  width: 100%;
+  height: 0.6rem;
+  background-color: rgba(var(--color-foreground), 0.12);
+  border-radius: 3px;
+  overflow: hidden;
+  position: relative;
+}
+
+.shipping-progress__bar,
+.free-shipping-bar__fill {
+  height: 100%;
+  background-color: rgb(var(--color-button));
+  border-radius: 3px;
+  transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.shipping-progress.is-unlocked .shipping-progress__bar {
+  background-color: #2D4030;
+}
+
+/* ==========================================================================
+   Milestone 2: Canitera Global Chrome & Cart Drawer Styles
+   ========================================================================== */
+
+/* 1. Announcement Bar Dismiss Button */
+.announcement-bar__close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.6rem;
+  height: 3.6rem;
+  min-width: 36px;
+  min-height: 36px;
+  margin-left: 1.2rem;
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: 50%;
+  color: rgb(var(--color-foreground));
+  cursor: pointer;
+  transition: background-color 0.2s ease, opacity 0.2s ease, transform 0.2s ease;
+  position: relative;
+  z-index: 2;
+}
+
+.announcement-bar__close:hover {
+  background-color: rgba(var(--color-foreground), 0.08);
+  opacity: 0.85;
+}
+
+.announcement-bar__close:focus-visible {
+  outline: 2px solid rgb(var(--color-foreground));
+  outline-offset: -2px;
+}
+
+.announcement-bar__close .svg-wrapper {
+  width: 1.2rem;
+  height: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.announcement-bar__close .svg-wrapper svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* 2. Mobile Drawer Account Link */
+.menu-drawer__account {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  padding: 1.6rem 3rem;
+  text-decoration: none;
+  color: rgb(var(--color-foreground));
+  border-bottom: 0.1rem solid rgba(var(--color-foreground), 0.08);
+  font-size: 1.6rem;
+  font-weight: 500;
+  letter-spacing: 0.04rem;
+  transition: background-color 0.2s ease;
+}
+
+.menu-drawer__account:hover {
+  background-color: rgba(var(--color-foreground), 0.04);
+}
+
+.menu-drawer__account .svg-wrapper {
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.menu-drawer__account .svg-wrapper svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* 3. Cart Drawer Free Shipping Progress Meter */
+.cart-drawer__free-shipping {
+  padding: 1.4rem 2rem;
+  background-color: rgba(var(--color-foreground), 0.03);
+  border-bottom: 0.1rem solid rgba(var(--color-foreground), 0.08);
+  margin-bottom: 0.8rem;
+}
+
+cart-drawer.is-empty .cart-drawer__free-shipping {
+  display: none;
+}
+
+.free-shipping-meter__message {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  font-size: 1.35rem;
+  line-height: 1.4;
+  color: rgb(var(--color-foreground));
+  margin-bottom: 0.8rem;
+  word-break: break-word;
+}
+
+.free-shipping-meter__message.is-unlocked {
+  color: #2D4030;
+  font-weight: 600;
+}
+
+.free-shipping-meter__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: #2D4030;
+}
+
+.free-shipping-meter__track {
+  position: relative;
+  width: 100%;
+  height: 0.8rem;
+  background-color: rgba(var(--color-foreground), 0.1);
+  border-radius: 10rem;
+  overflow: hidden;
+}
+
+.free-shipping-meter__bar {
+  height: 100%;
+  background: linear-gradient(90deg, #2D4030 0%, #3D5741 100%);
+  border-radius: 10rem;
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: width;
+}
+
+.free-shipping-meter__bar.is-unlocked {
+  background: linear-gradient(90deg, #2D4030 0%, #4A6B4F 100%);
+}
+
+/* 4. Cart Drawer Upsell / Complementary Recommendations */
+.cart-drawer__upsell {
+  margin-top: 2rem;
+  padding: 1.6rem 2rem;
+  background-color: rgba(var(--color-foreground), 0.02);
+  border-top: 0.1rem solid rgba(var(--color-foreground), 0.08);
+  border-bottom: 0.1rem solid rgba(var(--color-foreground), 0.08);
+}
+
+cart-drawer.is-empty .cart-drawer__upsell {
+  display: none;
+}
+
+.cart-drawer__upsell-header {
+  margin-bottom: 1.2rem;
+}
+
+.cart-drawer__upsell-heading {
+  font-family: var(--font-heading-family);
+  font-size: 1.4rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  margin: 0 0 0.4rem;
+  color: rgb(var(--color-foreground));
+  text-transform: uppercase;
+}
+
+.cart-drawer__upsell-subheading {
+  font-size: 1.2rem;
+  color: rgba(var(--color-foreground), 0.7);
+  display: block;
+}
+
+.cart-drawer__upsell-items {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.cart-drawer__upsell-card {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  padding: 1rem 1.2rem;
+  background-color: rgb(var(--color-background));
+  border: 0.1rem solid rgba(var(--color-foreground), 0.08);
+  border-radius: var(--media-radius, 6px);
+  transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.cart-drawer__upsell-card:hover {
+  border-color: rgba(var(--color-foreground), 0.18);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.cart-drawer__upsell-media {
+  width: 6.4rem;
+  height: 6.4rem;
+  min-width: 6.4rem;
+  border-radius: var(--media-radius, 4px);
+  overflow: hidden;
+  background-color: rgba(var(--color-foreground), 0.04);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cart-drawer__upsell-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.cart-drawer__upsell-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(var(--color-foreground), 0.4);
+}
+
+.cart-drawer__upsell-content {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.cart-drawer__upsell-title {
+  font-size: 1.35rem;
+  font-weight: 500;
+  color: rgb(var(--color-foreground));
+  text-decoration: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+  word-break: break-word;
+}
+
+.cart-drawer__upsell-title:hover {
+  text-decoration: underline;
+}
+
+.cart-drawer__upsell-price {
+  font-size: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.cart-drawer__upsell-compare-price {
+  color: rgba(var(--color-foreground), 0.5);
+  text-decoration: line-through;
+}
+
+.cart-drawer__upsell-current-price {
+  font-weight: 600;
+  color: rgb(var(--color-foreground));
+}
+
+.cart-drawer__upsell-btn {
+  align-self: flex-start;
+  margin-top: 0.4rem;
+  padding: 0.5rem 1.4rem;
+  min-height: 3rem;
+  font-size: 1.25rem;
+  font-weight: 500;
+  border-radius: var(--button-radius, 4px);
+  background-color: transparent;
+  border: 0.1rem solid #2D4030;
+  color: #2D4030;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.cart-drawer__upsell-btn:hover {
+  background-color: #2D4030;
+  color: #FAF8F5;
+}
+
+.cart-drawer__upsell-btn.loading {
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+.cart-drawer__upsell-btn.loading .cart-drawer__upsell-btn-text {
+  visibility: hidden;
+}
+
+.cart-drawer__upsell-btn.loading .loading__spinner {
+  display: block !important;
+  position: absolute;
+}
+
+/* 5. Editorial Footer Grid Layout */
+@media screen and (min-width: 990px) {
+  .footer__blocks-wrapper.grid--4-col-desktop,
+  .footer__blocks-wrapper:has(.footer-block--newsletter-block) {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr) 1.5fr;
+    gap: 4rem;
+    align-items: flex-start;
+  }
+
+  .footer-block--newsletter-block {
+    padding-left: 3rem;
+    border-left: 0.1rem solid rgba(var(--color-foreground), 0.08);
+  }
+}
+
+@media screen and (min-width: 750px) and (max-width: 989px) {
+  .footer__blocks-wrapper {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 3rem;
+  }
+
+  .footer-block--newsletter-block {
+    grid-column: span 2;
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 0.1rem solid rgba(var(--color-foreground), 0.08);
+  }
+}
+
+.footer-block__subtext {
+  font-size: 1.4rem;
+  line-height: 1.5;
+  margin-bottom: 1.6rem;
+  color: rgba(var(--color-foreground), 0.75);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .free-shipping-meter__bar,
+  .cart-drawer__upsell-card,
+  .cart-drawer__upsell-btn,
+  .announcement-bar__close {
+    transition: none !important;
+  }
+}
+
+

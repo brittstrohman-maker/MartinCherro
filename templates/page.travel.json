@@ -1,0 +1,106 @@
+﻿{
+  "sections": {
+    "hero": {
+      "type": "hero-cover",
+      "settings": {
+        "badge": "Canitera Travel Hub",
+        "heading": "Travel with your dog. Better.",
+        "subtext": "<p>Practical destination guides, checklists, and gear recommendations for road trips, beach days, and mountain escapes.</p>",
+        "primary_button_label": "Shop Travel Gear",
+        "primary_button_link": "shopify://collections/all",
+        "secondary_button_label": "Checklist Below",
+        "secondary_button_link": "#checklist-section",
+        "show_scroll_indicator": false,
+        "desktop_height": "70vh",
+        "color_scheme": "scheme-3"
+      }
+    },
+    "adventures": {
+      "type": "shop-by-adventure",
+      "blocks": {
+        "a1": { "type": "adventure_card", "settings": { "title": "Road Trips", "description": "Safe travel restraints & seat protectors" } },
+        "a2": { "type": "adventure_card", "settings": { "title": "Beach Days", "description": "Quick-dry towels & waterproof mats" } },
+        "a3": { "type": "adventure_card", "settings": { "title": "Mountain Adventures", "description": "Ergonomic harnesses & packs" } },
+        "a4": { "type": "adventure_card", "settings": { "title": "Weekend Getaways", "description": "Packable beds & travel bowls" } }
+      },
+      "block_order": [
+        "a1",
+        "a2",
+        "a3",
+        "a4"
+      ],
+      "settings": {
+        "color_scheme": "scheme-1",
+        "heading": "Destinations & Terrains",
+        "subtitle": "Curated gear for every style of adventure",
+        "heading_alignment": "center",
+        "padding_top": 64,
+        "padding_bottom": 64
+      }
+    },
+    "checklist": {
+      "type": "travel-checklist",
+      "blocks": {
+        "c1": { "type": "item", "settings": { "title": "Crash-Tested Restraint", "description": "Approved safety harness or ISOFIX tether." } },
+        "c2": { "type": "item", "settings": { "title": "Water & Travel Bowl", "description": "Spill-proof hydration bottle for stops." } },
+        "c3": { "type": "item", "settings": { "title": "Waterproof Seat Liner", "description": "Protects your vehicle from mud, fur, and sand." } },
+        "c4": { "type": "item", "settings": { "title": "Packable Travel Bed", "description": "Creates a calm, familiar sleeping space anywhere." } },
+        "c5": { "type": "item", "settings": { "title": "Fast-Drying Towels", "description": "Microfibre towels for unexpected river plunges." } },
+        "c6": { "type": "item", "settings": { "title": "Canine First-Aid Kit", "description": "Antiseptic wipes, tick puller, and vet info." } }
+      },
+      "block_order": [
+        "c1",
+        "c2",
+        "c3",
+        "c4",
+        "c5",
+        "c6"
+      ],
+      "settings": {
+        "color_scheme": "scheme-1",
+        "eyebrow": "Pre-Departure Checklist",
+        "heading": "The Essential Dog Travel Checklist",
+        "subtext": "Everything you need before turning the ignition key.",
+        "padding_top": 64,
+        "padding_bottom": 64
+      }
+    },
+    "featured_blog": {
+      "type": "featured-blog",
+      "settings": {
+        "heading": "Road Trip Guides & Field Notes",
+        "heading_size": "h2",
+        "blog": "news",
+        "post_limit": 3,
+        "columns_desktop": 3,
+        "color_scheme": "scheme-1",
+        "show_image": true,
+        "show_date": true,
+        "show_author": false,
+        "show_view_all": true,
+        "padding_top": 60,
+        "padding_bottom": 60
+      }
+    },
+    "newsletter": {
+      "type": "journal-newsletter",
+      "settings": {
+        "color_scheme": "scheme-1",
+        "eyebrow": "Stay Inspired",
+        "heading": "Get Our Free Dog Travel Itineraries",
+        "subtext": "<p>Sign up to receive curated dog-friendly routes across the Alps, Scandinavian fjords, and Southern European coastlines.</p>",
+        "button_label": "Send Me Guides",
+        "note": "Delivered fortnightly. Zero spam.",
+        "padding_top": 64,
+        "padding_bottom": 64
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "adventures",
+    "checklist",
+    "featured_blog",
+    "newsletter"
+  ]
+}

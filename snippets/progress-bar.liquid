@@ -1,5 +1,116 @@
-<div class="progress-bar-container hidden">
-  <div class="progress-bar">
-    <div class="progress-bar-value"></div>
+{% comment %}
+  Renders dynamic progress bar component.
+  Supports both:
+  1. Free-shipping progress meter when current_amount / target_amount are passed:
+     {% render 'progress-bar', current_amount: cart.total_price, target_amount: threshold_cents %}
+  2. Indeterminate loading progress bar when called without arguments (e.g. within quantity-input):
+     {% render 'progress-bar' %}
+
+  Accepts:
+  - current_amount: {Number} Current total in cents (e.g. cart.total_price).
+  - target_amount: {Number} Threshold target in cents (e.g. settings.free_shipping_threshold * 100).
+  - message_unlocked: {String} Unlocked state copy (optional).
+  - message_remaining: {String} Remaining state copy with [amount] placeholder (optional).
+  - class: {String} Additional CSS classes (optional).
+  - show_icon: {Boolean} Show status icon (default: true).
+{% endcomment %}
+
+{%- if target_amount != blank or current_amount != blank -%}
+  {%- liquid
+    assign current = current_amount | default: 0 | plus: 0
+    assign target = target_amount | default: 0 | plus: 0
+
+    if target > 0
+      assign percentage = current | times: 100.0 | divided_by: target | round: 1
+    else
+      assign percentage = 100.0
+    endif
+
+    if percentage > 100.0
+      assign percentage = 100.0
+    elsif percentage < 0.0
+      assign percentage = 0.0
+    endif
+
+    assign is_unlocked = false
+    if current >= target and target > 0
+      assign is_unlocked = true
+    elsif target <= 0
+      assign is_unlocked = true
+    endif
+
+    assign remaining = target | minus: current
+    if remaining < 0
+      assign remaining = 0
+    endif
+
+    assign remaining_money = remaining | money
+    if settings.currency_code_enabled
+      assign remaining_money = remaining | money_with_currency
+    endif
+
+    assign default_unlocked = 'sections.cart.free_shipping_unlocked' | t | default: "Congratulations! You've unlocked free shipping!"
+    assign default_remaining = 'sections.cart.free_shipping_remaining_html' | t | default: "You're [amount] away from free shipping"
+
+    assign unlocked_text = message_unlocked | default: default_unlocked
+    assign remaining_template = message_remaining | default: default_remaining
+    assign remaining_text = remaining_template | replace: '[amount]', remaining_money
+  -%}
+
+  <div
+    class="shipping-progress{% if class != blank %} {{ class }}{% endif %}{% if is_unlocked %} is-unlocked{% endif %}"
+    data-target="{{ target }}"
+    data-current="{{ current }}"
+    data-unlocked-message="{{ unlocked_text | escape }}"
+    data-remaining-template="{{ remaining_template | escape }}"
+  >
+    <div class="shipping-progress__message">
+      {%- if show_icon != false -%}
+        <span class="shipping-progress__icon" aria-hidden="true">
+          {%- if is_unlocked -%}
+            <!-- Unlocked Checkmark Icon -->
+            <svg viewBox="0 0 20 20" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="10" cy="10" r="8" fill="rgba(var(--color-button), 0.15)"/>
+              <polyline points="6 10 9 13 14 7"/>
+            </svg>
+          {%- else -%}
+            <!-- Shipping Van Icon -->
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="1" y="3" width="15" height="13"/>
+              <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/>
+              <circle cx="5.5" cy="18.5" r="2.5"/>
+              <circle cx="18.5" cy="18.5" r="2.5"/>
+            </svg>
+          {%- endif -%}
+        </span>
+      {%- endif -%}
+      <span class="shipping-progress__text">
+        {%- if is_unlocked -%}
+          {{ unlocked_text }}
+        {%- else -%}
+          {{ remaining_text }}
+        {%- endif -%}
+      </span>
+    </div>
+
+    <div
+      class="shipping-progress__track"
+      role="progressbar"
+      aria-valuenow="{{ percentage | round }}"
+      aria-valuemin="0"
+      aria-valuemax="100"
+      aria-valuetext="{% if is_unlocked %}{{ unlocked_text | strip_html }}{% else %}{{ remaining_text | strip_html }}{% endif %}"
+    >
+      <div
+        class="shipping-progress__bar"
+        style="width: {{ percentage }}%;"
+      ></div>
+    </div>
   </div>
-</div>
+{%- else -%}
+  <div class="progress-bar-container hidden{% if class != blank %} {{ class }}{% endif %}">
+    <div class="progress-bar">
+      <div class="progress-bar-value"></div>
+    </div>
+  </div>
+{%- endif -%}

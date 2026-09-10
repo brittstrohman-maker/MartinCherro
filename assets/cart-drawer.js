@@ -5,6 +5,14 @@ class CartDrawer extends HTMLElement {
     this.addEventListener('keyup', (evt) => evt.code === 'Escape' && this.close());
     this.querySelector('#CartDrawer-Overlay').addEventListener('click', this.close.bind(this));
     this.setHeaderCartIconAccessibility();
+
+    // Event delegation for upsell quick-add buttons
+    this.addEventListener('click', (event) => {
+      const quickAddButton = event.target.closest('[data-quick-add]');
+      if (quickAddButton) {
+        this.handleUpsellQuickAdd(quickAddButton);
+      }
+    });
   }
 
   setHeaderCartIconAccessibility() {
@@ -74,6 +82,53 @@ class CartDrawer extends HTMLElement {
     });
 
     cartDrawerNote.parentElement.addEventListener('keyup', onKeyUpEscape);
+  }
+
+  handleUpsellQuickAdd(button) {
+    const variantId = button.dataset.variantId;
+    if (!variantId || button.getAttribute('aria-disabled') === 'true') return;
+
+    button.setAttribute('aria-disabled', 'true');
+    button.classList.add('loading');
+    const spinner = button.querySelector('.loading__spinner');
+    if (spinner) spinner.classList.remove('hidden');
+
+    const sectionsToRender = this.getSectionsToRender().map((section) => section.id);
+    const formData = new FormData();
+    formData.append('id', variantId);
+    formData.append('quantity', '1');
+    formData.append('sections', sectionsToRender.join(','));
+    formData.append('sections_url', window.location.pathname);
+
+    const addUrl = (window.routes && window.routes.cart_add_url) ? window.routes.cart_add_url : '/cart/add';
+
+    fetch(addUrl, {
+      method: 'POST',
+      headers: {
+        'X-Requested-With': 'XMLHttpRequest',
+        Accept: 'application/json',
+      },
+      body: formData,
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        if (response.status) {
+          console.error(response.description || response.message);
+          return;
+        }
+        this.renderContents(response);
+        if (typeof publish !== 'undefined' && typeof PUB_SUB_EVENTS !== 'undefined') {
+          publish(PUB_SUB_EVENTS.cartUpdate, { source: 'cart-drawer-upsell', cartData: response });
+        }
+      })
+      .catch((error) => {
+        console.error('Error adding upsell item to cart:', error);
+      })
+      .finally(() => {
+        button.removeAttribute('aria-disabled');
+        button.classList.remove('loading');
+        if (spinner) spinner.classList.add('hidden');
+      });
   }
 
   renderContents(parsedState) {

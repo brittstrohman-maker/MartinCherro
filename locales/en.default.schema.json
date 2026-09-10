@@ -347,6 +347,10 @@
             "label": "Collection",
             "info": "Shown when cart drawer is empty"
           }
+        },
+        "free_shipping_threshold": {
+          "label": "Free shipping threshold",
+          "info": "Minimum cart total to qualify for free shipping (in your store currency)"
         }
       }
     },

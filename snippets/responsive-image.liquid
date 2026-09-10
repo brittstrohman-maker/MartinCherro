@@ -1,0 +1,86 @@
+{% comment %}
+  Renders high-performance responsive images with native srcset, lazyloading, and CLS protection.
+
+  Accepts:
+  - image: {Object} Shopify Image object (required).
+  - sizes: {String} CSS sizes attribute (default: '(min-width: 1200px) 1200px, 100vw').
+  - widths: {String} Comma-separated width list (default: '375, 550, 750, 1100, 1500, 1780, 2000').
+  - alt: {String} Image alternative text (default: image.alt | default: shop.name).
+  - class: {String} CSS classes on the img element.
+  - priority: {Boolean|String} Eager load and high fetchpriority (default: false).
+  - aspect_ratio: {Number|String} Aspect ratio constraint (optional).
+  - wrapper_class: {String} CSS classes on the wrapper (optional).
+  - placeholder: {String} SVG placeholder name if image is blank (default: 'image').
+
+  Usage:
+  {% render 'responsive-image', image: section.settings.image, sizes: '100vw', priority: true %}
+  {% render 'responsive-image', image: product.featured_image, sizes: '(min-width: 990px) 50vw, 100vw', class: 'motion-reduce' %}
+{% endcomment %}
+
+{%- if image == blank -%}
+  {%- assign placeholder_name = placeholder | default: 'image' -%}
+  {{ placeholder_name | placeholder_svg_tag: 'placeholder-svg' }}
+{%- else -%}
+  {%- liquid
+    # Alt text resolution
+    assign image_alt = alt | default: image.alt | default: shop.name | escape
+
+    # Sizes and widths
+    assign image_sizes = sizes | default: '(min-width: 1200px) 1200px, 100vw'
+    assign image_widths = widths | default: '375, 550, 750, 1100, 1500, 1780, 2000'
+
+    # Performance Loading Strategy
+    if priority == true or priority == 'eager'
+      assign loading_mode = 'eager'
+      assign fetch_mode = 'high'
+    else
+      assign loading_mode = 'lazy'
+      assign fetch_mode = 'auto'
+    endif
+
+    # Fallback base width
+    assign fallback_width = image.width | at_most: 1500
+
+    # Aspect ratio resolution
+    assign ratio = image.aspect_ratio | default: 1.0
+    if aspect_ratio == 'square'
+      assign ratio = 1.0
+    elsif aspect_ratio == 'portrait'
+      assign ratio = 0.8
+    elsif aspect_ratio == 'landscape'
+      assign ratio = 1.33
+    elsif aspect_ratio != blank
+      assign ratio = aspect_ratio | plus: 0.0
+    endif
+  -%}
+
+  {%- if wrapper_class != blank or aspect_ratio != blank -%}
+    <div class="responsive-image-wrapper{% if wrapper_class != blank %} {{ wrapper_class }}{% endif %}" style="--aspect-ratio: {{ ratio }};">
+      {{
+        image
+        | image_url: width: fallback_width
+        | image_tag:
+          loading: loading_mode,
+          fetchpriority: fetch_mode,
+          decoding: 'async',
+          sizes: image_sizes,
+          widths: image_widths,
+          class: class,
+          alt: image_alt
+      }}
+    </div>
+  {%- else -%}
+    {{
+      image
+      | image_url: width: fallback_width
+      | image_tag:
+        loading: loading_mode,
+        fetchpriority: fetch_mode,
+        decoding: 'async',
+        sizes: image_sizes,
+        widths: image_widths,
+        class: class,
+        alt: image_alt
+    }}
+  {%- endif -%}
+{%- endif -%}

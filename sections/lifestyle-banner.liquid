@@ -1,0 +1,189 @@
+﻿{%- style -%}
+  .lifestyle-banner--{{ section.id }} {
+    position: relative;
+    min-height: {{ section.settings.banner_height }};
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background-color: #1C1D1D;
+  }
+
+  .lifestyle-banner__media {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .lifestyle-banner__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .lifestyle-banner__overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(28, 29, 29, {{ section.settings.overlay_opacity | divided_by: 100.0 }});
+    z-index: 1;
+  }
+
+  .lifestyle-banner__content {
+    position: relative;
+    z-index: 2;
+    text-align: {{ section.settings.text_alignment }};
+    max-width: 85rem;
+    padding: 6rem 2rem;
+    color: #FFFFFF;
+  }
+
+  .lifestyle-banner__eyebrow {
+    font-size: 1.2rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #D9CBB8;
+    margin-bottom: 1.6rem;
+    display: block;
+  }
+
+  .lifestyle-banner__heading {
+    font-size: calc(var(--font-heading-scale) * 3.6rem);
+    line-height: 1.15;
+    color: #FFFFFF;
+    margin: 0 0 2.4rem;
+    letter-spacing: -0.01em;
+  }
+
+  @media screen and (min-width: 750px) {
+    .lifestyle-banner__heading {
+      font-size: calc(var(--font-heading-scale) * 5rem);
+    }
+  }
+
+  .lifestyle-banner__subtext {
+    font-size: 1.8rem;
+    color: rgba(255, 255, 255, 0.9);
+    margin: 0 auto 3.2rem;
+    max-width: 60rem;
+    line-height: 1.5;
+  }
+{%- endstyle -%}
+
+<div class="lifestyle-banner lifestyle-banner--{{ section.id }} color-{{ section.settings.color_scheme }} gradient">
+  <div class="lifestyle-banner__media">
+    {%- if section.settings.image != blank -%}
+      {%- assign banner_alt = section.settings.image.alt | default: section.settings.heading | escape -%}
+      {% render 'responsive-image', image: section.settings.image, sizes: '100vw', alt: banner_alt %}
+    {%- else -%}
+      <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #1C1D1D 0%, #2D4030 100%);"></div>
+    {%- endif -%}
+  </div>
+
+  <div class="lifestyle-banner__overlay"></div>
+
+  <div class="lifestyle-banner__content page-width">
+    {%- if section.settings.eyebrow != blank -%}
+      <span class="lifestyle-banner__eyebrow">{{ section.settings.eyebrow | escape }}</span>
+    {%- endif -%}
+
+    <h2 class="lifestyle-banner__heading">{{ section.settings.heading | escape }}</h2>
+
+    {%- if section.settings.subtext != blank -%}
+      <div class="lifestyle-banner__subtext rte">{{ section.settings.subtext }}</div>
+    {%- endif -%}
+
+    {%- if section.settings.button_label != blank -%}
+      <a href="{{ section.settings.button_link | default: '/collections/all' }}" class="button button--secondary">
+        {{ section.settings.button_label | escape }}
+      </a>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Lifestyle Banner",
+  "tag": "section",
+  "class": "section-lifestyle-banner",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-3"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Background Image"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "min": 0,
+      "max": 90,
+      "step": 5,
+      "unit": "%",
+      "label": "Dark overlay opacity",
+      "default": 45
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow text",
+      "default": "Explore Without Limits"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "The best destinations are better together."
+    },
+    {
+      "type": "richtext",
+      "id": "subtext",
+      "label": "Subtext",
+      "default": "<p>From scenic coastal overlooks to remote mountain trails, bring your companion everywhere with confidence.</p>"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Start Your Next Adventure"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "select",
+      "id": "banner_height",
+      "label": "Banner height",
+      "options": [
+        { "value": "50vh", "label": "Compact (50vh)" },
+        { "value": "65vh", "label": "Medium (65vh)" },
+        { "value": "80vh", "label": "Tall (80vh)" }
+      ],
+      "default": "65vh"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" }
+      ],
+      "default": "center"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Lifestyle Banner"
+    }
+  ]
+}
+{% endschema %}

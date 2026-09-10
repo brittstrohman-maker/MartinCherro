@@ -1,0 +1,266 @@
+﻿{%- style -%}
+  .testimonials--{{ section.id }} {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+
+  .testimonials__header {
+    text-align: center;
+    max-width: 60rem;
+    margin: 0 auto 5rem;
+  }
+
+  .testimonials__eyebrow {
+    font-size: 1.2rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgb(var(--color-button));
+    margin-bottom: 1rem;
+    display: block;
+  }
+
+  .testimonials__title {
+    font-size: calc(var(--font-heading-scale) * 3.2rem);
+    color: rgb(var(--color-foreground));
+    margin: 0 0 1rem;
+  }
+
+  .testimonials__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+
+  @media screen and (min-width: 750px) {
+    .testimonials__grid {
+      grid-template-columns: repeat({{ section.blocks.size | at_least: 2 | at_most: 3 }}, 1fr);
+      gap: 3.6rem;
+    }
+  }
+
+  .testimonials__card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 3.6rem 3rem;
+    border-radius: var(--media-radius, 8px);
+    background-color: rgba(var(--color-foreground), 0.02);
+    border: 1px solid rgba(var(--color-foreground), 0.06);
+    position: relative;
+  }
+
+  .testimonials__stars {
+    margin-bottom: 1.6rem;
+  }
+
+  .testimonials__quote {
+    font-size: 1.6rem;
+    line-height: 1.65;
+    color: rgb(var(--color-foreground));
+    font-style: italic;
+    margin: 0 0 2.4rem;
+    flex: 1;
+  }
+
+  .testimonials__author {
+    display: flex;
+    align-items: center;
+    gap: 1.4rem;
+  }
+
+  .testimonials__avatar {
+    width: 4.4rem;
+    height: 4.4rem;
+    border-radius: 50%;
+    overflow: hidden;
+    background-color: #D9CBB8;
+    flex-shrink: 0;
+  }
+
+  .testimonials__avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .testimonials__meta {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .testimonials__name {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: rgb(var(--color-foreground));
+    margin: 0;
+  }
+
+  .testimonials__location {
+    font-size: 1.2rem;
+    color: rgba(var(--color-foreground), 0.6);
+    margin: 0.2rem 0 0;
+  }
+{%- endstyle -%}
+
+<div class="testimonials testimonials--{{ section.id }} color-{{ section.settings.color_scheme }} gradient">
+  <div class="page-width">
+    {%- if section.settings.title != blank -%}
+      <div class="testimonials__header">
+        {%- if section.settings.eyebrow != blank -%}
+          <span class="testimonials__eyebrow">{{ section.settings.eyebrow | escape }}</span>
+        {%- endif -%}
+        <h2 class="testimonials__title">{{ section.settings.title | escape }}</h2>
+      </div>
+    {%- endif -%}
+
+    <div class="testimonials__grid" role="list">
+      {%- for block in section.blocks -%}
+        <div class="testimonials__card" role="listitem" {{ block.shopify_attributes }}>
+          <div>
+            <div class="testimonials__stars">
+              {% render 'rating-stars', rating: block.settings.rating, show_count: false, show_badge: false %}
+            </div>
+            <blockquote class="testimonials__quote">
+              “{{ block.settings.quote | escape }}”
+            </blockquote>
+          </div>
+
+          <div class="testimonials__author">
+            {%- if block.settings.avatar != blank -%}
+              <div class="testimonials__avatar">
+                {%- assign av_alt = block.settings.author | default: 'Traveler' | escape -%}
+                {% render 'responsive-image', image: block.settings.avatar, sizes: '44px', alt: av_alt %}
+              </div>
+            {%- endif -%}
+            <div class="testimonials__meta">
+              <span class="testimonials__name">{{ block.settings.author | escape }}</span>
+              {%- if block.settings.location != blank -%}
+                <span class="testimonials__location">{{ block.settings.location | escape }}</span>
+              {%- endif -%}
+            </div>
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Testimonials",
+  "tag": "section",
+  "class": "section-testimonials",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Dispatches From The Road"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Stories from Fellow Travelers"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 24,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 24,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 64
+    }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Customer Story",
+      "settings": [
+        {
+          "type": "range",
+          "id": "rating",
+          "min": 4,
+          "max": 5,
+          "step": 0.5,
+          "label": "Star rating",
+          "default": 5
+        },
+        {
+          "type": "textarea",
+          "id": "quote",
+          "label": "Quote",
+          "default": "Our Golden Retriever used to get restless on long alpine drives. The Canitera seat protector and crash-rated harness made our Dolomites road trip completely stress-free."
+        },
+        {
+          "type": "text",
+          "id": "author",
+          "label": "Author name",
+          "default": "Elena M."
+        },
+        {
+          "type": "text",
+          "id": "location",
+          "label": "Location & Dog",
+          "default": "Munich, Germany • Traveling with Leo"
+        },
+        {
+          "type": "image_picker",
+          "id": "avatar",
+          "label": "Author or dog photo"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Testimonials",
+      "blocks": [
+        {
+          "type": "testimonial",
+          "settings": {
+            "author": "Marcus & Freja",
+            "location": "Stockholm, Sweden • Traveling with Atlas",
+            "quote": "The travel bed packs down tighter than my own sleeping mat. We just spent two weeks camping through Norway and it held up against mud, rain, and rocks."
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "author": "Camille R.",
+            "location": "Lyon, France • Traveling with Bailey",
+            "quote": "Finally, dog gear that looks beautiful in the car and actually works. The hydration bottle alone saved us on hot coastal walks along the Côte d'Azur."
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "author": "Thomas V.",
+            "location": "Amsterdam, Netherlands • Traveling with Juno",
+            "quote": "Impressed by the craftsmanship and subtle design. No loud neon logos or cheap plastics—just rugged, well-designed gear for dogs on the move."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

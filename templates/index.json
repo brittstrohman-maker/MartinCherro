@@ -1,75 +1,358 @@
-{
+﻿{
   "sections": {
-    "image_banner": {
-      "type": "image-banner",
+    "hero_cover": {
+      "type": "hero-cover",
+      "settings": {
+        "badge": "Built For The Journey",
+        "heading": "Go Further. Together.",
+        "subtext": "<p>Thoughtfully designed essentials for dogs who never want to stay home.</p>",
+        "primary_button_label": "Shop Travel Essentials",
+        "primary_button_link": "shopify://collections/all",
+        "secondary_button_label": "Explore Canitera",
+        "secondary_button_link": "shopify://pages/about",
+        "show_scroll_indicator": true,
+        "desktop_height": "85vh",
+        "color_scheme": "scheme-3"
+      }
+    },
+    "trust_strip": {
+      "type": "trust-value-strip",
       "blocks": {
-        "heading": {
-          "type": "heading",
+        "trust_1": {
+          "type": "value_item",
           "settings": {
-            "heading": "Browse our latest products",
-            "heading_size": "h0"
+            "icon": "compass",
+            "title": "Built for the Journey",
+            "subtitle": "Road-tested & trail-ready"
           }
         },
-        "button": {
-          "type": "buttons",
+        "trust_2": {
+          "type": "value_item",
           "settings": {
-            "button_label_1": "Shop all",
-            "button_link_1": "shopify://collections/all",
-            "button_style_secondary_1": true,
-            "button_label_2": "",
-            "button_link_2": "",
-            "button_style_secondary_2": false
+            "icon": "shield",
+            "title": "Safety & Comfort",
+            "subtitle": "Crash-tested restraints"
+          }
+        },
+        "trust_3": {
+          "type": "value_item",
+          "settings": {
+            "icon": "feather",
+            "title": "Thoughtful Design",
+            "subtitle": "Easy to pack & clean"
+          }
+        },
+        "trust_4": {
+          "type": "value_item",
+          "settings": {
+            "icon": "truck",
+            "title": "Fast Delivery",
+            "subtitle": "Free shipping over €75"
           }
         }
       },
       "block_order": [
-        "heading",
-        "button"
+        "trust_1",
+        "trust_2",
+        "trust_3",
+        "trust_4"
       ],
       "settings": {
-        "image_overlay_opacity": 40,
-        "image_height": "large",
-        "desktop_content_position": "bottom-center",
-        "show_text_box": false,
-        "image_behavior": "none",
-        "desktop_content_alignment": "center",
-        "color_scheme": "scheme-3",
-        "mobile_content_alignment": "center",
-        "stack_images_on_mobile": false,
-        "show_text_below": false
+        "color_scheme": "scheme-1",
+        "padding_top": 24,
+        "padding_bottom": 24
       }
     },
     "featured_collection": {
       "type": "featured-collection",
       "settings": {
-        "title": "Featured products",
+        "title": "Travel better with your best friend.",
         "heading_size": "h2",
-        "description": "",
-        "show_description": false,
+        "description": "<p>Everything you need for easier days on the road.</p>",
+        "show_description": true,
         "description_style": "body",
         "collection": "all",
-        "products_to_show": 8,
+        "products_to_show": 4,
         "columns_desktop": 4,
         "color_scheme": "scheme-1",
         "full_width": false,
         "show_view_all": true,
         "view_all_style": "solid",
         "enable_desktop_slider": false,
-        "swipe_on_mobile": false,
+        "swipe_on_mobile": true,
         "image_ratio": "adapt",
         "image_shape": "default",
         "show_secondary_image": true,
         "show_vendor": false,
-        "show_rating": false,
-        "quick_add": "none",
+        "show_rating": true,
+        "quick_add": "standard",
         "columns_mobile": "2",
-        "padding_top": 44,
-        "padding_bottom": 36
+        "padding_top": 60,
+        "padding_bottom": 48
+      }
+    },
+    "brand_story": {
+      "type": "brand-story-split",
+      "settings": {
+        "color_scheme": "scheme-1",
+        "layout": "image_first",
+        "badge": "Our Story",
+        "heading": "Made for the journey.",
+        "text": "<p>Canitera was created for the moments that happen beyond the front door — the road trips, early-morning walks, weekends away, and spontaneous detours. We believe life is simply better when your companion comes along.</p>",
+        "button_label": "Our Story",
+        "button_link": "shopify://pages/about",
+        "padding_top": 64,
+        "padding_bottom": 64
+      }
+    },
+    "shop_adventure": {
+      "type": "shop-by-adventure",
+      "blocks": {
+        "adv_1": {
+          "type": "adventure_card",
+          "settings": {
+            "title": "Road Trips",
+            "description": "Safe travel restraints & seat covers"
+          }
+        },
+        "adv_2": {
+          "type": "adventure_card",
+          "settings": {
+            "title": "Weekend Getaways",
+            "description": "Packable travel beds & bowls"
+          }
+        },
+        "adv_3": {
+          "type": "adventure_card",
+          "settings": {
+            "title": "Beach Days",
+            "description": "Quick-dry towels & flotation"
+          }
+        },
+        "adv_4": {
+          "type": "adventure_card",
+          "settings": {
+            "title": "Outdoor Adventures",
+            "description": "Ergonomic harnesses & packs"
+          }
+        }
+      },
+      "block_order": [
+        "adv_1",
+        "adv_2",
+        "adv_3",
+        "adv_4"
+      ],
+      "settings": {
+        "color_scheme": "scheme-1",
+        "heading": "Shop by Adventure",
+        "subtitle": "Curated gear for every destination and terrain",
+        "heading_alignment": "center",
+        "padding_top": 64,
+        "padding_bottom": 64
+      }
+    },
+    "product_spotlight": {
+      "type": "hero-product-spotlight",
+      "settings": {
+        "color_scheme": "scheme-1",
+        "badge": "The Canitera Essential",
+        "heading": "The All-Terrain Travel Bed",
+        "description": "<p>Designed to make every journey easier. Waterproof base, pressure-relieving foam, and an integrated carry roll for effortless departures.</p>",
+        "padding_top": 64,
+        "padding_bottom": 64
+      }
+    },
+    "why_canitera": {
+      "type": "why-canitera",
+      "blocks": {
+        "why_1": {
+          "type": "pillar",
+          "settings": {
+            "icon": "heart",
+            "title": "Comfort",
+            "text": "Made for dogs who go everywhere with you. Ergonomic support and temperature-regulating materials."
+          }
+        },
+        "why_2": {
+          "type": "pillar",
+          "settings": {
+            "icon": "shield",
+            "title": "Safety",
+            "text": "Thoughtful essentials for journeys big and small. Restraints and harnesses tested for security."
+          }
+        },
+        "why_3": {
+          "type": "pillar",
+          "settings": {
+            "icon": "zap",
+            "title": "Simplicity",
+            "text": "Less fuss. More adventure. Quick-release buckles, washable fabrics, and packable shapes."
+          }
+        },
+        "why_4": {
+          "type": "pillar",
+          "settings": {
+            "icon": "sparkles",
+            "title": "Design",
+            "text": "Practical products that belong in your lifestyle. Refined colors, tactile materials, zero clutter."
+          }
+        }
+      },
+      "block_order": [
+        "why_1",
+        "why_2",
+        "why_3",
+        "why_4"
+      ],
+      "settings": {
+        "color_scheme": "scheme-1",
+        "eyebrow": "The Canitera Standard",
+        "title": "Why Canitera",
+        "subtitle": "Engineered around the reality of travelling with dogs.",
+        "padding_top": 64,
+        "padding_bottom": 64
+      }
+    },
+    "lifestyle_banner": {
+      "type": "lifestyle-banner",
+      "settings": {
+        "color_scheme": "scheme-3",
+        "overlay_opacity": 45,
+        "eyebrow": "Where the road leads",
+        "heading": "The best destinations are better together.",
+        "subtext": "<p>Gear up for morning hikes, coastal routes, and cabin escapes.</p>",
+        "button_label": "Start Your Next Adventure",
+        "button_link": "shopify://collections/all",
+        "banner_height": "65vh",
+        "text_alignment": "center"
+      }
+    },
+    "testimonials": {
+      "type": "testimonials",
+      "blocks": {
+        "test_1": {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "quote": "Our Golden used to get restless on long drives through the Alps. The Canitera seat protector and harness made our Dolomites road trip completely stress-free.",
+            "author": "Elena M.",
+            "location": "Munich, Germany • Traveling with Leo"
+          }
+        },
+        "test_2": {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "quote": "The travel bed packs down tighter than my own sleeping pad. We spent two weeks camping across Norway and it held up through mud and rain.",
+            "author": "Marcus & Freja",
+            "location": "Stockholm, Sweden • Traveling with Atlas"
+          }
+        },
+        "test_3": {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "quote": "Finally, dog gear that looks beautiful in the car and actually performs. The hydration bottle alone saved us on hot coastal walks.",
+            "author": "Camille R.",
+            "location": "Lyon, France • Traveling with Bailey"
+          }
+        }
+      },
+      "block_order": [
+        "test_1",
+        "test_2",
+        "test_3"
+      ],
+      "settings": {
+        "color_scheme": "scheme-1",
+        "eyebrow": "Dispatches From The Road",
+        "title": "Stories from Fellow Travelers",
+        "padding_top": 64,
+        "padding_bottom": 64
+      }
+    },
+    "community_ugc": {
+      "type": "community-ugc",
+      "blocks": {
+        "ugc_1": { "type": "photo", "settings": { "caption": "@alps.hound • Dolomites" } },
+        "ugc_2": { "type": "photo", "settings": { "caption": "@norway_roamer • Lofoten" } },
+        "ugc_3": { "type": "photo", "settings": { "caption": "@vanlife.canine • Portugal" } },
+        "ugc_4": { "type": "photo", "settings": { "caption": "@highland_pup • Scotland" } },
+        "ugc_5": { "type": "photo", "settings": { "caption": "@coastaldogs • Cornwall" } }
+      },
+      "block_order": [
+        "ugc_1",
+        "ugc_2",
+        "ugc_3",
+        "ugc_4",
+        "ugc_5"
+      ],
+      "settings": {
+        "color_scheme": "scheme-1",
+        "tagline": "#CANITERATRAVELS",
+        "heading": "Take Canitera With You",
+        "subtitle": "See where the journey takes you.",
+        "padding_top": 64,
+        "padding_bottom": 64
+      }
+    },
+    "featured_blog": {
+      "type": "featured-blog",
+      "settings": {
+        "heading": "The Canitera Journal",
+        "heading_size": "h2",
+        "blog": "news",
+        "post_limit": 3,
+        "columns_desktop": 3,
+        "color_scheme": "scheme-1",
+        "show_image": true,
+        "show_date": true,
+        "show_author": false,
+        "show_view_all": true,
+        "padding_top": 60,
+        "padding_bottom": 60
+      }
+    },
+    "journal_newsletter": {
+      "type": "journal-newsletter",
+      "settings": {
+        "color_scheme": "scheme-1",
+        "eyebrow": "The Canitera Journal",
+        "heading": "More miles. More memories.",
+        "subtext": "<p>Join the Canitera journal for travel inspiration, practical tips and new arrivals.</p>",
+        "button_label": "Join Journal",
+        "note": "No spam. Unsubscribe anytime with one click.",
+        "padding_top": 64,
+        "padding_bottom": 64
+      }
+    },
+    "final_cta": {
+      "type": "final-cta-banner",
+      "settings": {
+        "color_scheme": "scheme-3",
+        "overlay_opacity": 50,
+        "heading": "Where will you go next?",
+        "subtext": "<p>Equip your companion with travel gear designed for a lifetime of shared adventures.</p>",
+        "button_label": "Shop Canitera",
+        "button_link": "shopify://collections/all",
+        "banner_height": "70vh"
       }
     }
   },
   "order": [
-    "image_banner",
-    "featured_collection"
+    "hero_cover",
+    "trust_strip",
+    "featured_collection",
+    "brand_story",
+    "shop_adventure",
+    "product_spotlight",
+    "why_canitera",
+    "lifestyle_banner",
+    "testimonials",
+    "community_ugc",
+    "featured_blog",
+    "journal_newsletter",
+    "final_cta"
   ]
 }

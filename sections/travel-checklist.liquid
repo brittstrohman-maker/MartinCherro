@@ -1,0 +1,217 @@
+﻿{%- style -%}
+  .travel-checklist--{{ section.id }} {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+    background-color: var(--color-background);
+  }
+
+  .travel-checklist__header {
+    text-align: center;
+    max-width: 64rem;
+    margin: 0 auto 4.8rem;
+  }
+
+  .travel-checklist__eyebrow {
+    font-size: 1.2rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgb(var(--color-button));
+    margin-bottom: 1rem;
+    display: block;
+  }
+
+  .travel-checklist__title {
+    font-size: calc(var(--font-heading-scale) * 3.4rem);
+    color: rgb(var(--color-foreground));
+    margin: 0 0 1.2rem;
+  }
+
+  .travel-checklist__subtitle {
+    font-size: 1.6rem;
+    color: rgba(var(--color-foreground), 0.75);
+    margin: 0;
+  }
+
+  .travel-checklist__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.6rem;
+    max-width: 90rem;
+    margin: 0 auto;
+  }
+
+  @media screen and (min-width: 600px) {
+    .travel-checklist__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media screen and (min-width: 990px) {
+    .travel-checklist__grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+    }
+  }
+
+  .travel-checklist__item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.6rem;
+    padding: 2rem;
+    border-radius: var(--media-radius, 8px);
+    background: rgba(var(--color-foreground), 0.02);
+    border: 1px solid rgba(var(--color-foreground), 0.08);
+  }
+
+  .travel-checklist__check {
+    width: 2.8rem;
+    height: 2.8rem;
+    border-radius: 50%;
+    background-color: rgba(var(--color-button), 0.12);
+    color: rgb(var(--color-button));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 0.2rem;
+  }
+
+  .travel-checklist__check svg {
+    width: 1.6rem;
+    height: 1.6rem;
+  }
+
+  .travel-checklist__name {
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: rgb(var(--color-foreground));
+    margin: 0 0 0.4rem;
+  }
+
+  .travel-checklist__desc {
+    font-size: 1.3rem;
+    line-height: 1.5;
+    color: rgba(var(--color-foreground), 0.7);
+    margin: 0;
+  }
+{%- endstyle -%}
+
+<div class="travel-checklist travel-checklist--{{ section.id }} color-{{ section.settings.color_scheme }} gradient">
+  <div class="page-width">
+    <div class="travel-checklist__header">
+      {%- if section.settings.eyebrow != blank -%}
+        <span class="travel-checklist__eyebrow">{{ section.settings.eyebrow | escape }}</span>
+      {%- endif -%}
+      <h2 class="travel-checklist__title">{{ section.settings.heading | escape }}</h2>
+      {%- if section.settings.subtext != blank -%}
+        <p class="travel-checklist__subtitle">{{ section.settings.subtext | escape }}</p>
+      {%- endif -%}
+    </div>
+
+    <div class="travel-checklist__grid" role="list">
+      {%- for block in section.blocks -%}
+        <div class="travel-checklist__item" role="listitem" {{ block.shopify_attributes }}>
+          <div class="travel-checklist__check" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+          </div>
+          <div>
+            <h3 class="travel-checklist__name">{{ block.settings.title | escape }}</h3>
+            {%- if block.settings.description != blank -%}
+              <p class="travel-checklist__desc">{{ block.settings.description | escape }}</p>
+            {%- endif -%}
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Travel Checklist",
+  "tag": "section",
+  "class": "section-travel-checklist",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Pre-Departure Preparation"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "The Essential Dog Travel Checklist",
+      "default": "The Essential Dog Travel Checklist"
+    },
+    {
+      "type": "text",
+      "id": "subtext",
+      "label": "Subtitle",
+      "default": "Key essentials to double-check before heading out on any road trip or adventure."
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 24,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 24,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 64
+    }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Checklist Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Item Name",
+          "default": "Travel Restraint"
+        },
+        {
+          "type": "text",
+          "id": "description",
+          "label": "Item Note",
+          "default": "Crash-tested car harness or seatbelt clip"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Travel Checklist",
+      "blocks": [
+        { "type": "item", "settings": { "title": "Travel Restraint", "description": "Crash-tested harness or secure seatbelt tether." } },
+        { "type": "item", "settings": { "title": "Water & Portable Bowl", "description": "Spill-proof bottle and collapsible bowl for hydration stops." } },
+        { "type": "item", "settings": { "title": "Packable Bed / Mat", "description": "Familiar scent and comfort for car boot or hotel floors." } },
+        { "type": "item", "settings": { "title": "Quick-Dry Towels", "description": "For muddy paws, beach days, and unexpected downpours." } },
+        { "type": "item", "settings": { "title": "Vaccine & ID Records", "description": "Physical copy or digital tags in case of vet visits." } },
+        { "type": "item", "settings": { "title": "Canine First-Aid Kit", "description": "Tick remover, antiseptic wipes, bandages, and tweezers." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -28,6 +28,51 @@
     }
   {%- endif -%}
 
+  /* Transparent Header Overlay Mode on Homepage */
+  {%- if section.settings.enable_transparent_header and request.page_type == 'index' -%}
+    @media screen and (min-width: 990px) {
+      .section-header:has(.header-wrapper--transparent) {
+        position: absolute;
+        top: var(--announcement-bar-height, 0px);
+        left: 0;
+        width: 100%;
+        z-index: 4;
+        background: transparent;
+      }
+
+      .header-wrapper--transparent:not(.scrolled-past-header) {
+        background: transparent !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
+        box-shadow: none !important;
+      }
+
+      .header-wrapper--transparent:not(.scrolled-past-header) .header__heading-link,
+      .header-wrapper--transparent:not(.scrolled-past-header) .header__menu-item,
+      .header-wrapper--transparent:not(.scrolled-past-header) .header__icon,
+      .header-wrapper--transparent:not(.scrolled-past-header) .header__icon .svg-wrapper,
+      .header-wrapper--transparent:not(.scrolled-past-header) .header__heading {
+        color: #FFFFFF;
+        fill: #FFFFFF;
+      }
+
+      .header-wrapper--transparent:not(.scrolled-past-header) .cart-count-bubble {
+        background-color: var(--color-accent-1, #2D4030);
+        color: #FFFFFF;
+      }
+    }
+
+    .header-wrapper--transparent {
+      transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .header-wrapper--transparent.scrolled-past-header,
+    .shopify-section-header-sticky .header-wrapper--transparent {
+      background: rgb(var(--color-background)) !important;
+      border-bottom: 1px solid rgba(var(--color-foreground), 0.08) !important;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+    }
+  {%- endif -%}
+
   {%- if section.settings.menu_type_desktop != "drawer" -%}
     @media screen and (min-width: 990px) {
       header-drawer {
@@ -140,13 +185,18 @@
   if section.settings.sticky_header_type != 'none'
     assign header_tag = 'sticky-header'
   endif
+
+  assign transparent_header = false
+  if section.settings.enable_transparent_header and request.page_type == 'index'
+    assign transparent_header = true
+  endif
 %}
 
 <{{ header_tag }}
   {% if header_tag == 'sticky-header' %}
     data-sticky-type="{{ section.settings.sticky_header_type }}"
   {% endif %}
-  class="header-wrapper color-{{ section.settings.color_scheme }} gradient{% if section.settings.show_line_separator %} header-wrapper--border-bottom{% endif %}"
+  class="header-wrapper color-{{ section.settings.color_scheme }} gradient{% if section.settings.show_line_separator %} header-wrapper--border-bottom{% endif %}{% if transparent_header %} header-wrapper--transparent header--transparent{% endif %}"
 >
   {%- liquid
     assign social_links = false
@@ -164,7 +214,7 @@
       assign language_selector = true
     endif
   -%}
-  <header class="header header--{{ section.settings.logo_position }} header--mobile-{{ section.settings.mobile_logo_position }} page-width{% if section.settings.menu_type_desktop == 'drawer' %} drawer-menu{% endif %}{% if section.settings.menu != blank %} header--has-menu{% endif %}{% if has_app_block %} header--has-app{% endif %}{% if social_links %} header--has-social{% endif %}{% if shop.customer_accounts_enabled %} header--has-account{% endif %}{% if country_selector or language_selector %} header--has-localizations{% endif %}">
+  <header class="header header--{{ section.settings.logo_position }} header--mobile-{{ section.settings.mobile_logo_position }} page-width{% if section.settings.menu_type_desktop == 'drawer' %} drawer-menu{% endif %}{% if section.settings.menu != blank %} header--has-menu{% endif %}{% if has_app_block %} header--has-app{% endif %}{% if social_links %} header--has-social{% endif %}{% if shop.customer_accounts_enabled %} header--has-account{% endif %}{% if country_selector or language_selector %} header--has-localizations{% endif %}{% if transparent_header %} header--transparent{% endif %}">
     {%- liquid
       assign render_search_left = false
       if section.settings.logo_position == 'top-center' or section.settings.menu == blank or shop.customer_accounts_enabled
@@ -504,6 +554,13 @@
   "class": "section-header",
   "max_blocks": 3,
   "settings": [
+    {
+      "type": "checkbox",
+      "id": "enable_transparent_header",
+      "default": false,
+      "label": "Enable transparent header on homepage",
+      "info": "Overlays the header transparently over the homepage hero banner. Reverts to solid sticky background when scrolled."
+    },
     {
       "type": "select",
       "id": "logo_position",
